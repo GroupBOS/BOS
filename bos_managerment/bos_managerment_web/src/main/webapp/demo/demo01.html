@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../js/ztree/zTreeStyle.css">
+	
+	<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/ztree/jquery.ztree.all-3.5.js"></script>
+	
+	<script type="text/javascript">
+		function addTab(name)
+		{
+			var bExists = $('#tt').tabs('exists',name);
+			if(bExists)
+			{
+				//如果已经存在同名的选项卡,则选中
+				$('#tt').tabs('select',name);
+			}
+			else
+			{
+				//否则新建新的选项卡	
+				$('#tt').tabs('add',{    
+				    title:name,    
+				    content:'Tab Body',    
+				    closable:true,    
+				    tools:[{    
+				        iconCls:'icon-mini-refresh',    
+				        handler:function(){    
+				            alert('refresh');    
+				        }    
+				    }]
+				}); 
+			}
+		}
+	</script>
+	
+	<script type="text/javascript">
+	
+	
+	
+	var setting = {
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				onClick: function(event,treeId,treeNode)
+				{
+					if(treeNode.pId != null)
+					{
+						//判断同名的标签页是否存在
+						var bExists = $("#tt").tabs('exists',treeNode.name)
+						if(bExists)
+						{
+							//若存在,改成选中状态
+							$("#tt").tabs('select',treeNode.name)
+						}
+						else{
+							//若不存在,新建,但不选中
+							$('#tt').tabs('add',{    
+							    title:treeNode.name,    
+							    content:'<iframe width="100%" height="100%" frameborder="0" src="../'+treeNode.page+'"></iframe>',    
+							    closable:true,
+							    selected: true
+							});
+						}
+					}
+					else
+					{
+						//如果点击的是父节点,那么就展开
+						var zTree = $.fn.zTree.getZTreeObj("treeDemo")
+						//第2个参数(从1开始数):
+						//true:展开
+						//false:收起
+						//null:自动切换展开/收起
+						zTree.expandNode(treeNode, null, null, null, null);
+					}
+				}
+				
+			
+			}
+		};
+	
+	
+		
+	</script>
+	
+	<script type="text/javascript">
+		$(function(){
+			$.getJSON("../data/menu.json",function(data){
+				$.fn.zTree.init($("#treeDemo"), setting, data);
+			})
+		})
+</script>
+	
+	
+
+</head>
+
+
+
+<body class="easyui-layout" data-options="fit:true">
+
+
+	<h2>基本布局</h2>
+	<p>这个布局包含上,下,左,右,以及中间部分</p>
+
+		<div data-options="region:'north',split:true" title="上边" style="height:50px"></div>
+		<div data-options="region:'south',split:true" title="下边" style="height:50px;"></div>
+		<div data-options="region:'east',split:true" title="右边" style="width:100px;"></div>
+		<div data-options="region:'west',split:true" title="折叠面板(手风琴)" style="width:200px;">
+			<div  class="easyui-accordion" data-options="fit:true">
+				<div title="面板1" data-options="iconCls:'icon-ok'" >
+					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="addTab('Robin的选项卡')">新建选项卡</a>
+					<div class="zTreeDemoBackground left">
+						<ul id="treeDemo" class="ztree"></ul>
+					</div>
+				</div>
+				<div title="面板2" data-options="iconCls:'icon-help'" style="padding:10px;">
+					<p>The accordion allows you to provide multiple panels and display one or more at a time. Each panel has built-in support for expanding and collapsing. Clicking on a panel header to expand or collapse that panel body. The panel content can be loaded via ajax by specifying a 'href' property. Users can define a panel to be selected. If it is not specified, then the first panel is taken by default.</p> 		
+				</div>
+				<div title="面板3" data-options="iconCls:'icon-search'" style="padding:10px;">
+					<ul class="easyui-tree">
+						<li>
+							<span>Foods</span>
+							<ul>
+								<li>
+									<span>Fruits</span>
+									<ul>
+										<li>apple</li>
+										<li>orange</li>
+									</ul>
+								</li>
+								<li>
+									<span>Vegetables</span>
+									<ul>
+										<li>tomato</li>
+										<li>carrot</li>
+										<li>cabbage</li>
+										<li>potato</li>
+										<li>lettuce</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div data-options="region:'center',title:'选项卡',iconCls:'icon-ok'">
+			<div id="tt" class="easyui-tabs" style="width:700px;height:250px" data-options="fit:true">
+				<div title="选项卡1" data-options="closable:true" style="padding:10px">
+					<p style="font-size:14px">jQuery EasyUI framework helps you build your web pages easily.</p>
+				</div>
+				<div title="选项卡2" data-options="closable:true" style="padding:10px">
+					<ul class="easyui-tree" data-options="url:'tree_data1.json',method:'get',animate:true"></ul>
+				</div>
+				<div title="选项卡3" data-options="iconCls:'icon-help',closable:true" style="padding:10px">
+					This is the help content.
+				</div>
+			</div>
+		</div>
+
+
+</body>
+</html>
