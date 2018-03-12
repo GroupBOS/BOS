@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+	<link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../js/ztree/zTreeStyle.css">
+	
+	<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/ztree/jquery.ztree.all-3.5.js"></script>
+	
+	
+	<script type="text/javascript">
+		function shoInfo(info)
+		{
+			alert(info);
+		}
+	
+	</script>
+	
+	<script type="text/javascript">
+		function show(){
+			$.messager.show({
+				title:'My Title',
+				msg:'默认为4s消失',
+				showType:'show'
+			});
+		}
+		function slide(){
+			$.messager.show({
+				title:'My Title',
+				msg:'设置为2s消失.',
+				timeout:2000,
+				showType:'slide'
+			});
+		}
+		function fade(){
+			$.messager.show({
+				title:'My Title',
+				msg:'timeout属性设为0,意味着不会自动消失',
+				timeout:0,
+				showType:'fade'
+			});
+		}
+		function progress(){
+			var win = $.messager.progress({
+				title:'Please waiting',
+				msg:'Loading data...'
+			});
+			setTimeout(function(){
+				alert(win);
+				$.messager.progress('close');
+			},2000)
+		}
+		
+		function confirm(){
+			$.messager.confirm('标题', '你确认吗?', function(r){
+				if (r){
+					alert('confirmed: '+r);
+				}
+			});
+		}
+		function prompt(){
+			$.messager.prompt('标题', '请随便输入些内容', function(r){
+				if (r){
+					alert('你的输入: '+r);
+				}
+			});
+		}
+		
+	</script>
+</head>
+<body>
+
+	<!-- menubutton -->
+	<a href="#" class="easyui-linkbutton" data-options="plain:true">没有下拉</a>
+	<a href="#" class="easyui-menubutton" data-options="menu:'#mm1',iconCls:'icon-edit'">有下拉1</a>
+	<a href="#" class="easyui-menubutton" data-options="menu:'#mm2',iconCls:'icon-help'">有下拉2</a>
+	<a href="#" class="easyui-menubutton" data-options="menu:'#mm3'">图片</a>
+	
+
+	<div id="mm1" style="width:150px;">
+		<div data-options="iconCls:'icon-undo'" onclick="test(123)">onclick:弹框123</div>
+		<div data-options="iconCls:'icon-redo'" href="javascript:test(456)">href=弹框456</div>
+		<!--分割线  -->
+		<div class="menu-sep"></div>
+		<div>Cut</div>
+		<div>Copy</div>
+		<div>Paste</div>
+		<div class="menu-sep"></div>
+		<div>
+			<span>Toolbar</span>
+			<div>
+				<div>Address</div>
+				<div>Link</div>
+				<div>Navigation Toolbar</div>
+				<div>Bookmark Toolbar</div>
+				<div class="menu-sep"></div>
+				<div>New Toolbar...</div>
+			</div>
+		</div>
+		<div data-options="iconCls:'icon-remove'">Delete</div>
+		<div>Select All</div>
+	</div>
+	<div id="mm2" style="width:100px;">
+		<div>Help</div>
+		<div>Update</div>
+		<div>About</div>
+	</div>
+	<div id="mm3" class="menu-content" style="background:#f0f0f0;padding:10px;text-align:left">
+		<img src="http://www.jeasyui.com/images/logo1.png" style="width:150px;height:50px">
+		<p style="font-size:14px;color:#444;">Try jQuery EasyUI to build your modern, interactive, javascript applications.</p>
+	</div>
+
+	
+	<!--message  -->
+	<a href="#" class="easyui-linkbutton" onclick="show()">直接显示</a>
+	<a href="#" class="easyui-linkbutton" onclick="slide()">滑动显示</a>
+	<a href="#" class="easyui-linkbutton" onclick="fade()">淡入淡出显示</a>
+	<a href="#" class="easyui-linkbutton" onclick="progress()">进度条</a>
+	
+	<a href="#" class="easyui-linkbutton" onclick="confirm();">确认框</a>
+	<a href="#" class="easyui-linkbutton" onclick="prompt()">文本输入框</a>
+
+
+
+</body>
+</html>

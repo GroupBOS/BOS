@@ -7,4 +7,11 @@
   </parent>
   <artifactId>bos_managerment_web</artifactId>
   <packaging>war</packaging>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.robin</groupId>
+  		<artifactId>bos_managerment_service</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>

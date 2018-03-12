@@ -6,4 +6,11 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>bos_managerment_dao</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.robin</groupId>
+  		<artifactId>bos_managerment_domain</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>

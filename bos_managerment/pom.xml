@@ -5,9 +5,9 @@
     <artifactId>common_parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.robin</groupId>
+  <!-- <groupId>com.robin</groupId> -->
   <artifactId>bos_managerment</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <!-- <version>0.0.1-SNAPSHOT</version> -->
   <packaging>pom</packaging>
   <modules>
   	<module>bos_managerment_domain</module>
@@ -15,4 +15,5 @@
   	<module>bos_managerment_service</module>
   	<module>bos_managerment_web</module>
   </modules>
+  
 </project>
