@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.robin.bos.dao.StandardRepository;
+import com.robin.bos.dao.base.StandardRepository;
 import com.robin.bos.domain.base.Standard;
 
 /**  

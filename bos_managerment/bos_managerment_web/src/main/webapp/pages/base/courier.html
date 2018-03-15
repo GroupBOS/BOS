@@ -26,6 +26,16 @@
 			
 			function doDelete(){
 				alert("删除...");
+				
+				var result = $("#grid").datagrid("getSelections");
+				var array = new Array()
+				
+				for(var i=0;i<result.length;i++)
+				{
+					array.push(result[i].id)
+				}
+				window.location.href = "../../courier_batchDel.action?ids="+array.toString()
+				
 			}
 			
 			function doRestore(){
@@ -109,10 +119,10 @@
 				width : 80,
 				align : 'center',
 				formatter : function(data,row, index){
-					if(data=="0"){
-						return "正常使用"
+					if(data=="1"){
+						return "已作废"
 					}else{
-						return "已作废";
+						return "正常使用";
 					}
 				}
 			}, {
@@ -141,7 +151,7 @@
 					pageList: [30,50,100],
 					pagination : true,
 					toolbar : toolbar,
-					url : "../../data/courier.json",
+					url : "../../courier_pageQuery.action",
 					idField : 'id',
 					columns : columns,
 					onDblClickRow : doDblClickRow
@@ -164,6 +174,15 @@
 				alert("双击表格数据...");
 			}
 		</script>
+		
+		<script type="text/javascript">
+			// 提交快递员的数据
+			function submitData() {
+				if ($("#courierForm").form("validate")) {
+					$("#courierForm").submit()
+				}
+			}
+		</script>
 	</head>
 
 	<body class="easyui-layout" style="visibility:hidden;">
@@ -173,12 +192,12 @@
 		<div class="easyui-window" title="对收派员进行添加或者修改" id="addWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 			<div region="north" style="height:31px;overflow:hidden;" split="false" border="false">
 				<div class="datagrid-toolbar">
-					<a id="save" icon="icon-save" href="#" class="easyui-linkbutton" plain="true">保存</a>
+					<a id="save" icon="icon-save" href="javascript:submitData()" class="easyui-linkbutton" plain="true">保存</a>
 				</div>
 			</div>
 
 			<div region="center" style="overflow:auto;padding:5px;" border="false">
-				<form>
+				<form id="courierForm" method="post" action="../../courier_save.action">
 					<table class="table-edit" width="80%" align="center">
 						<tr class="title">
 							<td colspan="4">收派员信息</td>

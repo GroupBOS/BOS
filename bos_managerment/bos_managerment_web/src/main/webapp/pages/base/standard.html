@@ -27,11 +27,15 @@
 			function submitData()
 			{
 				var result = $("#standardForm").form("validate");
-				alert(result)
+				//alert(result)
 				if(result)
 				{
 					$("#standardForm").submit();
-				}	
+				}
+				else
+				{
+					alert("信息不全!请填写完所有信息再提交")
+				}
 			}
 		
 		
@@ -52,19 +56,19 @@
 					pageList: [30,50,100],
 					pagination : true,
 					toolbar : toolbar,
-					url : "../../data/standard.json",
+					url : "../../standard_pageQuery.action",
 					idField : 'id',
-					columns : columns
+					columns : columns,
 				});
 			});	
 			
 			//工具栏
 			var toolbar = [ {
 				id : 'button-add',
-				text : '增加add',
+				text : '增加',
 				iconCls : 'icon-add',
 				handler : function(){
-					alert('增加');
+					//alert('增加');
 					//window.location.href="../../standard_save";
 					$("#standardWindow").window('open')
 				}
@@ -73,14 +77,35 @@
 				text : '修改',
 				iconCls : 'icon-edit',
 				handler : function(){
-					alert('修改');
+					//alert('修改');
+					var result = $("#grid").datagrid('getSelections');
+					//判断用户选中了多少条数据
+					if(result.length == 1)
+					{
+						$("#standardWindow").window('open')
+						//回显数据到form中
+						$("#standardForm").form("load", result[0])
+					}
+					else
+					{
+						$.messager.alert("修改异常","必须选中1条记录进行修改");
+					}		
 				}
 			},{
 				id : 'button-delete',
 				text : '作废',
 				iconCls : 'icon-cancel',
 				handler : function(){
-					alert('作废');
+					//alert('作废');
+					var result = $("#grid").datagrid('getSelections');
+					var array = new Array()
+					for(var i=0;i<result.length;i++)
+					{
+						array.push(result[i].id)
+					}
+					var str = array.toString();
+					alert(str)
+					
 				}
 			},{
 				id : 'button-restore',
@@ -154,7 +179,7 @@
 
 			<div region="center" style="overflow:auto;padding:5px;" border="false">
 				
-				<form id="standardForm" action="#" method="post">
+				<form id="standardForm" action="../../standard_save.action" method="post">
 					<table class="table-edit" width="80%" align="center">
 						<tr class="title">
 							<td colspan="2">收派标准信息
