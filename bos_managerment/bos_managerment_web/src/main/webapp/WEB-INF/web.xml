@@ -21,7 +21,7 @@
   </context-param>
   
   
-	<filter>
+	<!-- <filter>
 		<filter-name>OpenSession</filter-name>
 		<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
 	</filter>
@@ -29,7 +29,7 @@
 	<filter-mapping>
 		<filter-name>OpenSession</filter-name>
 		<url-pattern>*.action</url-pattern> 
-	</filter-mapping>
+	</filter-mapping> -->
   
   
 	<!--struts2 filter  -->
