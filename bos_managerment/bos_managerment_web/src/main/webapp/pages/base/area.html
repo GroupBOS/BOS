@@ -14,6 +14,8 @@
 		<script type="text/javascript" src="../../js/easyui/ext/jquery.portal.js"></script>
 		<script type="text/javascript" src="../../js/easyui/ext/jquery.cookie.js"></script>
 		<script src="../../js/easyui/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+		<!-- 导入ocupload -->
+		<script type="text/javascript" src="../../js/jquery.ocupload-1.1.2.js"></script>
 		<script type="text/javascript">
 			function doAdd(){
 				$('#addWindow').window("open");
@@ -25,6 +27,10 @@
 			
 			function doDelete(){
 				alert("删除...");
+			}
+			
+			function doImport(){
+				alert("导入...");
 			}
 			
 			//工具栏
@@ -46,7 +52,8 @@
 			}, {
 				id : 'button-import',
 				text : '导入',
-				iconCls : 'icon-redo'
+				iconCls : 'icon-redo',
+				handler : doImport
 			}];
 			// 定义列
 			var columns = [ [ {
@@ -98,7 +105,7 @@
 					pageList: [30,50,100],
 					pagination : true,
 					toolbar : toolbar,
-					url : "../../data/area.json",
+					url : "../../areaAction_pageQuery.action",
 					idField : 'id',
 					columns : columns,
 					onDblClickRow : doDblClickRow
@@ -114,6 +121,15 @@
 			        height: 400,
 			        resizable:false
 			    });
+				
+				
+				$("#button-import").upload({
+				    // 请求参数    
+				    name:"file",
+				    // 请求地址
+				    action:"../../areaAction_importXLS.action"
+				})
+
 				
 			});
 		

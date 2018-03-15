@@ -20,12 +20,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
-import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.robin.bos.domain.base.Standard;
 import com.robin.bos.service.base.StandardService;
-import com.robin.bos.web.action.BaseAction;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -41,9 +39,15 @@ import net.sf.json.JSONObject;
 @Scope("prototype")
 @Namespace("/")
 @ParentPackage("struts-default")
-public class StandardAction extends BaseAction<Standard> {
+public class StandardActionBK extends ActionSupport implements ModelDriven<Standard> {
 
     private static final long serialVersionUID = 4102264787823149516L;
+    private Standard model = new Standard();
+    
+    @Override
+    public Standard getModel() {
+        return this.model;
+    }
     
     
     @Autowired
@@ -54,7 +58,7 @@ public class StandardAction extends BaseAction<Standard> {
                      @Result(name = ERROR,type="redirect",location="/pages/base/standard.html")})
     public String save()
     {
-        Standard standard = standardService.save(getModel());
+        Standard standard = standardService.save(model);
         if(standard != null)
         {
             return SUCCESS;
@@ -63,6 +67,15 @@ public class StandardAction extends BaseAction<Standard> {
     }
     
     
+    private Integer page;
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+    
+    private Integer rows;
+    public void setRows(Integer rows) {
+        this.rows = rows;
+    }
 
     @Action(value="standard_pageQuery")
     public String pageQuery() throws IOException
@@ -70,8 +83,20 @@ public class StandardAction extends BaseAction<Standard> {
         //List<Standard> list = standardService.findAll();
         Pageable pageable = new PageRequest(page-1, rows);
         Page<Standard> page = standardService.findAll(pageable);
-
-        page2Json(page, null);
+        List<Standard> list = page.getContent();
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", page.getNumberOfElements());
+        map.put("rows", list);
+        
+        JSONObject jsonObject = JSONObject.fromObject(map);
+        String json = jsonObject.toString();
+        
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.write(json);
+        
         return NONE;
     }
     

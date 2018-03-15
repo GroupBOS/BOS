@@ -34,7 +34,6 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.robin.bos.domain.base.Courier;
 import com.robin.bos.domain.base.Standard;
 import com.robin.bos.service.base.CourierService;
-import com.robin.bos.web.action.BaseAction;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -49,9 +48,27 @@ import net.sf.json.JsonConfig;
 @Scope("prototype")
 @Namespace("/")
 @ParentPackage("struts-default")
-public class CourierAction extends BaseAction<Courier>{
+public class CourierActionBK extends ActionSupport implements ModelDriven<Courier>{
 
     private static final long serialVersionUID = -5344671714414993043L;
+
+    private Courier model = new Courier();
+    
+    @Override
+    public Courier getModel() {
+        return model;
+    }
+    
+    
+    private Integer page;
+    private Integer rows;
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public void setRows(Integer rows) {
+        this.rows = rows;
+    }
 
     @Autowired
     private CourierService courierSerivce;
@@ -72,11 +89,10 @@ public class CourierAction extends BaseAction<Courier>{
             //cb:查询条件构造器(and or like...)
             public Predicate toPredicate(Root<Courier> root, CriteriaQuery<?> criteriaQuery,
                     CriteriaBuilder cb) {
-                
-                String courierNum = getModel().getCourierNum();
-                Standard standard = getModel().getStandard();
-                String company = getModel().getCompany();
-                String type = getModel().getType();
+                String courierNum = model.getCourierNum();
+                Standard standard = model.getStandard();
+                String company = model.getCompany();
+                String type = model.getType();
                 
                 List<Predicate> list = new ArrayList<>();
                 
@@ -134,14 +150,29 @@ public class CourierAction extends BaseAction<Courier>{
         //List<Standard> list = standardService.findAll();
         Pageable pageable = new PageRequest(page-1, rows);
         
+        
+        
+        
+        
         Page<Courier> page = courierSerivce.findAll(specification,pageable);
-
+        List<Courier> list = page.getContent();
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", page.getNumberOfElements());
+        map.put("rows", list);
+        
         // 灵活控制输出的内容
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[] {"fixedAreas", "takeTime"});
         
+        JSONObject jsonObject = JSONObject.fromObject(map,jsonConfig);
+        //JSONObject jsonObject = JSONObject.fromObject(map);
+        String json = jsonObject.toString();
         
-        page2Json(page, jsonConfig);
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.write(json);
         
         return NONE;
     }
@@ -151,7 +182,8 @@ public class CourierAction extends BaseAction<Courier>{
                      @Result(name=ERROR,type="redirect",location="/pages/base/courier.html")})
     public String save()
     {
-        Courier courier = courierSerivce.save(getModel());
+        System.out.println(model);
+        Courier courier = courierSerivce.save(model);
         if(courier != null)
         {
             return SUCCESS;

@@ -12,5 +12,10 @@
   		<artifactId>bos_managerment_dao</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>com.robin</groupId>
+  		<artifactId>robinUtils</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>
