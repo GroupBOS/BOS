@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,13 @@ public class CourierServiceImpl implements CourierService {
     @Override
     public Page<Courier> findAll(Pageable page) {
         return courierRepository.findAll(page);
+    }
+
+    @Override
+    public Page<Courier> findAll(Specification<Courier> specification, Pageable pageable) {
+          
+        // TODO Auto-generated method stub  
+        return courierRepository.findAll(specification,pageable);
     }
 
 }

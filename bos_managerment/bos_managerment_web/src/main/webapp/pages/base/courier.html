@@ -35,11 +35,15 @@
 					array.push(result[i].id)
 				}
 				window.location.href = "../../courier_batchDel.action?ids="+array.toString()
-				
 			}
 			
 			function doRestore(){
 				alert("将取派员还原...");
+			}
+			
+			
+			function openSearchWindow(){
+				$("#searchWindow").window("open")
 			}
 			//工具栏
 			var toolbar = [ {
@@ -62,6 +66,11 @@
 				text : '还原',
 				iconCls : 'icon-save',
 				handler : doRestore
+			},{
+				id : 'button-search',
+				text : '搜索',
+				iconCls : 'icon-search',
+				handler : openSearchWindow
 			}];
 			// 定义列
 			var columns = [ [ {
@@ -182,6 +191,56 @@
 					$("#courierForm").submit()
 				}
 			}
+			
+			//$.fn是指jquery的命名空间，加上fn上的方法及属性，会对jquery实例每一个有效。
+			//如扩展$.fn.abc()
+			//那么你可以这样子：$("#div").abc();
+			$.fn.serializeJson = function() {
+				// 0.声明一个空的集合(类似于Map)
+				var serializeObj = {};
+				// 1.将对象序列化成json序列,但是是[{"name":"courierNum","value":"1"},...]这样的形式
+				var array = this.serializeArray();
+				var str = this.serialize();
+				//str:courierNum=111&standard.name=222&company=333&type=444
+				console.log("000array:"+JSON.stringify(array))
+				
+				// 2.遍历array
+				$(array).each(
+						function() {
+							// 1.判断集合(serializeObj)中是否有key为this.name的元素
+							if (serializeObj[this.name]) {
+								// 2.判断这个元素是否是数组
+								if ($.isArray(serializeObj[this.name])) {
+									// 3.如果是,则往数组里面继续增加元素
+									serializeObj[this.name].push(this.value);
+									console.log("111serializeObj:"+JSON.stringify(serializeObj))
+								} else {
+									// 4.如果不是,将其声明为一个数组(新增的元素,会作为数组的新成员)
+									serializeObj[this.name] = [
+											serializeObj[this.name], this.value ];
+									console.log("222serializeObj:"+JSON.stringify(serializeObj))
+								}
+							} else {
+								// 5.如果没有对应的key,则直接添加进这个map
+								serializeObj[this.name] = this.value;
+								console.log("333serializeObj:"+JSON.stringify(serializeObj))
+							}
+						});
+				//console.log("333serializeObj:"+JSON.stringify(array))
+//  [{"name":"courierNum","value":"1"},
+//   {"name":"standard.name","value":"2"},
+//   {"name":"company","value":"3"},
+//   {"name":"type","value":"4"}]
+				console.log("444serializeObj:"+JSON.stringify(serializeObj))
+//	 {"courierNum":"1","standard.name":"2","company":"3","type":"4"}
+				return serializeObj;
+			};
+
+			// 提交搜索快递员的数据
+			function doSearch() {
+				var result = $("#searchForm").serializeJson()
+				$('#grid').datagrid('load', result);
+			}
 		</script>
 	</head>
 
@@ -261,9 +320,9 @@
 		</div>
 		
 		<!-- 查询快递员-->
-		<div class="easyui-window" title="查询快递员窗口" closed="true" id="searchWindow" collapsible="false" minimizable="false" maximizable="false" style="width: 400px; top:40px;left:200px">
+		<div class="easyui-window" modal="true" title="查询快递员窗口" closed="true" id="searchWindow" collapsible="false" minimizable="false" maximizable="false" style="width: 400px; top:40px;left:200px">
 			<div style="overflow:auto;padding:5px;" border="false">
-				<form id="searchForm">
+				<form id="searchForm" action="#" method="post">
 					<table class="table-edit" width="80%" align="center">
 						<tr class="title">
 							<td colspan="2">查询条件</td>
@@ -293,7 +352,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2"><a id="searchBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a> </td>
+							<td colspan="2"><a id="searchBtn" href="javascript:doSearch()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a> </td>
 						</tr>
 					</table>
 				</form>

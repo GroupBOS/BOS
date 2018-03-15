@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import com.robin.bos.domain.base.Courier;
 import com.robin.bos.domain.base.Standard;
@@ -21,5 +22,7 @@ public interface CourierService {
     public List<Courier> findAll();
     
     public Page<Courier> findAll(Pageable page);
+
+    public Page<Courier> findAll(Specification<Courier> specification, Pageable pageable);
 }
   
