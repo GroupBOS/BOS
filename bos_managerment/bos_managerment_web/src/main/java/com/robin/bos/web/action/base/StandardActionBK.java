@@ -1,5 +1,5 @@
 package com.robin.bos.web.action.base;
-
+/*
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -28,11 +28,11 @@ import com.robin.bos.service.base.StandardService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-/**  
+*//**  
  * ClassName:StandardAction <br/>  
  * Function:  <br/>  
  * Date:     2018年3月14日 下午5:57:34 <br/>       
- */
+ *//*
 
 
 @Controller
@@ -119,3 +119,4 @@ public class StandardActionBK extends ActionSupport implements ModelDriven<Stand
 
 }
   
+*/

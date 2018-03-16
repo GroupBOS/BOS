@@ -1,5 +1,5 @@
 package com.robin.bos.web.action.base;
-
+/*
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -38,11 +38,11 @@ import com.robin.bos.service.base.CourierService;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
-/**  
+*//**  
  * ClassName:CourierAction <br/>  
  * Function:  <br/>  
  * Date:     2018年3月14日 下午10:22:39 <br/>       
- */
+ *//*
 
 @Controller
 @Scope("prototype")
@@ -215,3 +215,4 @@ public class CourierActionBK extends ActionSupport implements ModelDriven<Courie
 
 }
   
+*/

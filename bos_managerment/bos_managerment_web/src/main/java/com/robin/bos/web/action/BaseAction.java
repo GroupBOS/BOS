@@ -17,6 +17,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.robin.bos.domain.base.Area;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
@@ -36,8 +37,7 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
         ParameterizedType parameterizedType = (ParameterizedType) type;
         
         Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-        Class clazz = (Class) actualTypeArguments[0];
-        System.out.println("clazz name:"+clazz.getName());
+        Class<T> clazz = (Class<T>) actualTypeArguments[0];
         try {
             model = (T) clazz.newInstance();
         } catch (Exception e) {
@@ -81,6 +81,23 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
             json = JSONObject.fromObject(map).toString();
         }
         
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.write(json);
+    }
+    
+    public void list2Json(List<T> list,JsonConfig jsonConfig) throws IOException
+    {
+        String json = "";
+        if(jsonConfig != null)
+        {
+            json = JSONArray.fromObject(list,jsonConfig).toString();
+        }
+        else
+        {
+            json = JSONArray.fromObject(list).toString();
+        }
         HttpServletResponse response = ServletActionContext.getResponse();
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter writer = response.getWriter();

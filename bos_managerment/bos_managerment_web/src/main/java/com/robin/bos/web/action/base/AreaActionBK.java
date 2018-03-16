@@ -1,6 +1,6 @@
 package com.robin.bos.web.action.base;
 
-
+/*
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -39,11 +39,11 @@ import com.robin.utils.PinYin4jUtils;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
-/**  
+*//**  
  * ClassName:AreaAction <br/>  
  * Function:  <br/>  
  * Date:     2018年3月15日 下午8:15:28 <br/>       
- */
+ *//*
 @Controller
 @Scope("prototype")
 @ParentPackage("struts-default")
@@ -169,3 +169,4 @@ public class AreaActionBK extends ActionSupport implements ModelDriven<Area>{
 
 }
   
+*/

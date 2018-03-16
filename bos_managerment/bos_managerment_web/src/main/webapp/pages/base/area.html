@@ -29,9 +29,10 @@
 				alert("删除...");
 			}
 			
-			function doImport(){
+			 function doImport(){
 				alert("导入...");
-			}
+				//upLoad.submit();
+			} 
 			
 			//工具栏
 			var toolbar = [ {
@@ -123,11 +124,17 @@
 			    });
 				
 				
-				$("#button-import").upload({
+				var upLoad = $("#button-import").upload({
 				    // 请求参数    
 				    name:"file",
 				    // 请求地址
-				    action:"../../areaAction_importXLS.action"
+				    action:"../../areaAction_importXLS.action",
+				    autoSubmit: true,
+				    params: {"filename":"test"}, 
+				    //params:{"filename":upLoad.filename()},
+				     onSubmit:function(){
+				    	alert(upLoad.filename());
+				    }
 				})
 
 				

@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -37,6 +38,7 @@ import com.robin.bos.service.base.AreaService;
 import com.robin.bos.web.action.BaseAction;
 import com.robin.utils.PinYin4jUtils;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
@@ -50,11 +52,19 @@ import net.sf.json.JsonConfig;
 @ParentPackage("struts-default")
 @Namespace("/")
 public class AreaAction extends BaseAction<Area>{
-
+    private String q;
+    public void setQ(String q) {
+        this.q = q;
+    }
     
     private File file;
     public void setFile(File file) {
         this.file = file;
+    }
+    
+    private String filename;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
     
     @Autowired
@@ -68,7 +78,8 @@ public class AreaAction extends BaseAction<Area>{
         {
             System.out.println(file.getName());
         }
-
+        System.out.println("filename:"+filename);
+        
         List<Area> list = new ArrayList<>();
         
         HSSFWorkbook workbook;
@@ -82,7 +93,7 @@ public class AreaAction extends BaseAction<Area>{
                 }
                 
                 String province = row.getCell(1).getStringCellValue();
-                String city = row.getCell(2).getStringCellValue();
+                String city =     row.getCell(2).getStringCellValue();
                 String district = row.getCell(3).getStringCellValue();
                 String postcode = row.getCell(4).getStringCellValue();
                 
@@ -119,7 +130,6 @@ public class AreaAction extends BaseAction<Area>{
         return SUCCESS;
     }
     
-    
     @Action(value="areaAction_pageQuery",results={@Result(name=SUCCESS,type="redirect",location="/pages/base/area.html")})
     public String pageQuery() throws IOException
     {
@@ -133,6 +143,29 @@ public class AreaAction extends BaseAction<Area>{
         
         return NONE;
     }
+    
+    
+    
+    @Action(value="areaAction_findAll",results={@Result(name=SUCCESS,type="redirect",location="/pages/base/area.html")})
+    public String findAll() throws IOException
+    {
+        Page<Area> page;
+        List<Area> list;
+        if(StringUtils.isNotEmpty(q))
+        {
+            System.out.println("q:"+q);
+            list = areaService.findByQ(q);
+        }
+        else
+        {
+            page = areaService.findAll(null);
+            list = page.getContent();
+        }
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"subareas"});
 
+        list2Json(list, jsonConfig);
+        return NONE;
+    }
 }
   
