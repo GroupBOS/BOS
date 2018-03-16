@@ -203,6 +203,17 @@
 			function doDblClickRow(){
 				alert("双击表格数据...");
 			}
+			
+			function submitData(){
+				var result = $("#subareaForm").form("validate");
+				if(result)
+				{
+					$("#subareaForm").submit();
+				}
+				
+				
+			}
+			
 		</script>
 	</head>
 
@@ -214,7 +225,7 @@
 		<div class="easyui-window" title="分区添加修改" id="addWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 			<div style="height:31px;overflow:hidden;" split="false" border="false">
 				<div class="datagrid-toolbar">
-					<a id="save" icon="icon-save" href="#" class="easyui-linkbutton" plain="true">保存</a>
+					<a id="save" icon="icon-save" href="javascript:submitData()" class="easyui-linkbutton" plain="true">保存</a>
 				</div>
 			</div>
 
