@@ -5,16 +5,23 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * @description:地域信息实体类，主要包含 省市区(县)
  */
 @Entity
 @Table(name = "T_AREA")
+//@JsonIgnoreProperties("subareas")
 public class Area {
 
     @Id
@@ -35,7 +42,8 @@ public class Area {
     private String shortcode; // 简码
 
     @OneToMany(mappedBy = "area")
-    private Set<SubArea> subareas = new HashSet<SubArea>();
+    //若不加上 transient,会导致查询subArea时,当查询到subArea.area时,会递归查询subareas,造成死循环
+    private transient Set<SubArea> subareas = new HashSet<SubArea>();
     
 
     public String getName() {

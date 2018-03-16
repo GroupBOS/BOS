@@ -1,5 +1,8 @@
 package com.robin.bos.service.base;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.robin.bos.domain.base.SubArea;
 
 /**  
@@ -10,6 +13,8 @@ import com.robin.bos.domain.base.SubArea;
 public interface SubAreaService {
 
     SubArea save(SubArea model);
+
+    Page<SubArea> findAll(Pageable pageable);
 
 }
   

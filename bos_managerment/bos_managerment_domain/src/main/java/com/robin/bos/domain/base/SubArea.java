@@ -24,7 +24,7 @@ public class SubArea {
     @Column(name = "C_ASSIST_KEY_WORDS")
     private String assistKeyWords; // 辅助关键字
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "C_AREA_ID")
     private Area area; // 区域
     @ManyToOne
