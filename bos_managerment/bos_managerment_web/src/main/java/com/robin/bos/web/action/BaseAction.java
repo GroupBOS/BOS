@@ -62,12 +62,12 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
     }
     
     
-    public void page2Json(Page<T> page,JsonConfig jsonConfig) throws IOException
+    public void page2Json(Page page,JsonConfig jsonConfig) throws IOException
     {
         
         Map<String, Object> map = new HashMap<>();
         
-        List<T> list = page.getContent();
+        List list = page.getContent();
         
         map.put("total", page.getTotalElements());
         map.put("rows", list);
