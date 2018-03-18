@@ -1,5 +1,12 @@
 package com.robin.crm.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.robin.crm.dao.CustomerRepository;
 import com.robin.crm.domain.Customer;
 import com.robin.crm.service.CustomerService;
 
@@ -8,8 +15,13 @@ import com.robin.crm.service.CustomerService;
  * Function:  <br/>  
  * Date:     2018年3月18日 下午3:10:12 <br/>       
  */
+@Component
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
-
+    
+    @Autowired
+    private CustomerRepository customerRepository;
+    
     @Override
     public Customer findById(Long id) {
         Customer customer = new Customer();
@@ -22,6 +34,26 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void test() {
        System.out.println("This is Test");
+    }
+
+    @Override
+    public List<Customer> findUnAssociatedCustomers() {
+        return customerRepository.findByFixedAreaIdIsNull();
+    }
+
+    @Override
+    public List<Customer> findAssociatedCustomers(Long id) {
+          
+        return customerRepository.findByFixedAreaId(id.toString());
+    }
+
+    @Override
+    public void assignCustomers2FixedArea(Long fixedAreaId, List<Long> customerIds) {
+        customerRepository.unbindCustomerByFixedArea(fixedAreaId.toString());
+    
+        for (Long customerId : customerIds) {
+            customerRepository.bindCustomer2FixedArea(customerId, fixedAreaId.toString());
+        }
     }
 
 }

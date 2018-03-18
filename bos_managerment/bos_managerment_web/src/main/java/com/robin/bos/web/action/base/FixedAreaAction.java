@@ -1,6 +1,7 @@
 package com.robin.bos.web.action.base;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
+import com.robin.bos.domain.base.Customer;
 import com.robin.bos.domain.base.FixedArea;
 import com.robin.bos.service.base.FixedAreaService;
 import com.robin.bos.web.action.BaseAction;
@@ -34,8 +36,15 @@ public class FixedAreaAction extends BaseAction<FixedArea> {
 
     private static final long serialVersionUID = 669794071376309198L;
     
+    
     @Autowired
     FixedAreaService fixedAreaService;
+    
+    
+    private List<Long> customerIds;
+    public void setCustomerIds(List<Long> customerIds) {
+        this.customerIds = customerIds;
+    }
     
     
     @Action(value ="fixedAreaAction_pageQuery")
@@ -63,6 +72,34 @@ public class FixedAreaAction extends BaseAction<FixedArea> {
         }
         return ERROR;
     }
+    
+    
+    @Action(value="fixedAreaAction_findUnAssociatedCustomers")
+    public String findUnAssociatedCustomers() throws IOException
+    {
+        
+        List<Customer> customers = fixedAreaService.findUnAssociatedCustomers();
+        list2Json(customers, null);
+        return NONE;
+    }
+    
+    @Action(value="fixedAreaAction_findAssociatedCustomers")
+    public String findAssociatedCustomers() throws IOException
+    {
+        List<Customer> customers = fixedAreaService.findAssociatedCustomers(getModel().getId());
+        list2Json(customers, null);
+        return NONE;
+    }
+    
+    @Action(value="fixedAreaAction_assignCustomers2FixedArea",
+            results={@Result(name=SUCCESS,type="redirect",location="/pages/base/fixed_area.html"),
+                     @Result(name=ERROR,type="redirect",location="/pages/base/fixed_area.html")})
+    public String assignCustomers2FixedArea() {
+        fixedAreaService.assignCustomers2FixedArea(getModel().getId(),customerIds);
+        
+        return SUCCESS;
+    }
+    
     
 
 }

@@ -35,6 +35,54 @@
 				$('#customerWindow').window('open');
 			}
 			
+			function doCustomerAssociations(){
+				var rows = $("#grid").datagrid("getSelections")
+				if(rows.length == 1)
+				{
+					$('#customerWindow').window('open');
+					
+					//1.先清空两个Select选框
+					$("#noassociationSelect").empty();
+					$("#associationSelect").empty();
+					
+					//2.找出未关联的客户(就是fixedAreaId为null)
+					$.post("../../fixedAreaAction_findUnAssociatedCustomers.action",function(data){
+						for(var i=0;i<data.length;i++)
+						{
+							var id = data[i].id;
+							var username = data[i].username
+							var telephone = data[i].telephone
+							$("#noassociationSelect").append("<option  value='"+id+"'>"+username
+									+"["+telephone+"]"+"</option>")
+						}
+					})
+					
+					//3.找出已经关联的客户(就是fixedAreaId为null)
+					//var param = "{"+"'customerFixedAreaId':"+$("#customerFixedAreaId").val()+"}"
+					//alert(param)
+					
+					var id = rows[0].id
+					//alert(id)
+					$.post("../../fixedAreaAction_findAssociatedCustomers.action","id="+id,function(data){
+						for(var i=0;i<data.length;i++)
+						{
+							var id = data[i].id;
+							var username = data[i].username
+							var telephone = data[i].telephone
+							$("#associationSelect").append("<option  value='"+id+"'>"+username
+									+"["+telephone+"]"+"</option>")
+						}
+					})
+				}
+				else
+				{
+					alert("必须只选择一个定区进行绑定")
+				}
+				
+				
+				
+			}
+			
 			//工具栏
 			var toolbar = [ {
 				id : 'button-search',	
@@ -60,7 +108,7 @@
 				id : 'button-association',
 				text : '关联客户',
 				iconCls : 'icon-sum',
-				handler : doAssociations
+				handler : doCustomerAssociations
 			},{
 				id : 'button-association-courier',
 				text : '关联快递员',
@@ -265,9 +313,31 @@
 					$("#fixedAreaForm").submit()
 				}
 			}
+			
+			function moveCustomer2Right() {
+				$("#associationSelect").append(
+						$("#noassociationSelect option:selected"))
+			}
+
+			function moveCustomer2Left() {
+				$("#noassociationSelect").append(
+						$("#associationSelect option:selected"))
+			}
+			
+			function associateCustomer2FixedArea() {
+				// 给定区ID赋值
+				var rows = $("#grid").datagrid("getSelections");
+
+				$("#customerFixedAreaId").val(rows[0].id)
+				// 选中右侧的下拉框中所有的数据
+
+				$("#associationSelect option").attr("selected", "selected")
+
+				// 提交表单
+				$("#customerForm").submit();
+				
+			}
 		</script>
-		
-		
 	</head>
 
 	<body class="easyui-layout" style="visibility:hidden;">
@@ -296,6 +366,7 @@
 
 			<div style="overflow:auto;padding:5px;" border="false">
 				<form id="fixedAreaForm" method="post" action="../../fixedAreaAction_save.action">
+				<input type="hidden" name="id" id="id" />
 					<table class="table-edit" width="80%" align="center">
 						<tr class="title">
 							<td colspan="2">定区信息</td>
@@ -374,19 +445,20 @@
 						<tr>
 							<td>
 								<input type="hidden" name="id" id="customerFixedAreaId" />
-								<select id="noassociationSelect" multiple="multiple" size="10"></select>
+								<select id="noassociationSelect" multiple="multiple" size="10">
+								</select>
 							</td>
 							<td>
-								<input type="button" value="》》" id="toRight">
+								<input type="button" value="》》" id="toRight" onclick="moveCustomer2Right()">
 								<br/>
-								<input type="button" value="《《" id="toLeft">
+								<input type="button" value="《《" id="toLeft" onclick="moveCustomer2Left()">
 							</td>
 							<td>
 								<select id="associationSelect" name="customerIds" multiple="multiple" size="10"></select>
 							</td>
 						</tr>
 						<tr>
-							<td colspan="3"><a id="associationBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">关联客户</a> </td>
+							<td colspan="3"><a id="associationBtn" href="javascript:associateCustomer2FixedArea()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">关联客户</a> </td>
 						</tr>
 					</table>
 				</form>
@@ -427,7 +499,7 @@
 						</tr>
 						<tr>
 							<td colspan="3">
-								<a id="associationCourierBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">关联快递员</a>
+								<a id="associationCourierBtn" href="javascript:associateCustomer2FixedArea()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">关联快递员</a>
 							 </td>
 						</tr>
 					</table>

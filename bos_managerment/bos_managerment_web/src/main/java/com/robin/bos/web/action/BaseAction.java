@@ -87,7 +87,7 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
         writer.write(json);
     }
     
-    public void list2Json(List<T> list,JsonConfig jsonConfig) throws IOException
+    public void list2Json(List list,JsonConfig jsonConfig) throws IOException
     {
         String json = "";
         if(jsonConfig != null)
