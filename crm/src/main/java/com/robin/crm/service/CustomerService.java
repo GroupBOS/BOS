@@ -24,9 +24,9 @@ import com.robin.crm.domain.Customer;
 public interface CustomerService {
     
     
-    //@GET
-    //@Path("/{id}/findById")
-    //public Customer findById(@PathParam("id")Long id);
+    @GET
+    @Path("/{id}/findById")
+    public Customer findById(@PathParam("id")Long id);
     
     @GET
     @Path("/test")

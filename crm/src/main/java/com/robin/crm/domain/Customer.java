@@ -162,5 +162,6 @@ public class Customer {
     public void setFixedAreaId(String fixedAreaId) {
         this.fixedAreaId = fixedAreaId;
     }
+    
 
 }
