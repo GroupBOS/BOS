@@ -1,7 +1,9 @@
 package com.robin.bos.service.base.impl;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.core.MediaType;
 
@@ -13,8 +15,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.robin.bos.dao.base.FixedAreaRepository;
+import com.robin.bos.dao.base.SubAreaRepository;
 import com.robin.bos.domain.base.Customer;
 import com.robin.bos.domain.base.FixedArea;
+import com.robin.bos.domain.base.SubArea;
 import com.robin.bos.service.base.FixedAreaService;
 
 /**  
@@ -28,6 +32,9 @@ public class FixedAreaServiceImpl implements FixedAreaService {
 
     @Autowired
     private FixedAreaRepository fixedAreaRepository;
+    
+    @Autowired
+    private SubAreaRepository subAreaRepository;
     
     @Override
     public Page<FixedArea> findAll(Pageable pageable) {
@@ -78,6 +85,73 @@ public class FixedAreaServiceImpl implements FixedAreaService {
             accept(MediaType.APPLICATION_JSON).
             query("fixedAreaId", fixedAreaId).
             put(null);
+        }
+        
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<SubArea> findUnAssociatedSubAreas() {
+        return subAreaRepository.findByFixedAreaIsNull();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<SubArea> findAssociatedSubAreas(Long id) {
+        FixedArea fixedArea = new FixedArea();
+        fixedArea.setId(id);
+        return subAreaRepository.findByFixedArea(fixedArea);
+    }
+
+    
+    @SuppressWarnings("unused")
+    public void assignSubAreas2FixedArea(Long fixedAreaId, List<Long> subAreaIds) {
+        
+        System.out.println("fixedAreaId:"+fixedAreaId);
+        FixedArea fixedArea = fixedAreaRepository.findById(fixedAreaId);
+        if(subAreaIds != null)
+        {
+            List<SubArea> subAreas_old = subAreaRepository.findByFixedArea(fixedArea);
+            if(subAreaIds != null)
+            {
+                for (SubArea subArea : subAreas_old) {
+                    subArea.setFixedArea(null);
+                    subAreaRepository.saveAndFlush(subArea);
+                }
+            }
+            
+            
+            
+            System.out.println("Fuck not null");
+            Set<SubArea> subAreas = new HashSet<>();
+            System.out.println("fix:"+fixedArea);
+            for (Long areaId : subAreaIds) {
+                SubArea subArea = subAreaRepository.findById(areaId);
+                subArea.setFixedArea(fixedArea);
+                subAreaRepository.saveAndFlush(subArea);
+                subAreas.add(subArea);
+                System.out.println(areaId+":"+subArea);
+            }
+            
+            fixedArea.setSubareas(subAreas);
+            fixedAreaRepository.saveAndFlush(fixedArea);
+            
+        }else
+        {
+            System.out.println("Fuck null");
+            
+            
+            List<SubArea> subAreas = subAreaRepository.findByFixedArea(fixedArea);
+            if(subAreaIds != null)
+            {
+                for (SubArea subArea : subAreas) {
+                    subArea.setFixedArea(null);
+                    subAreaRepository.saveAndFlush(subArea);
+                }
+            }
+            
+            fixedArea.setSubareas(null);
+            fixedAreaRepository.saveAndFlush(fixedArea);
         }
         
     }

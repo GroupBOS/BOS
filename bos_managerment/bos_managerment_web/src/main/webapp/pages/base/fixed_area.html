@@ -31,8 +31,49 @@
 				$('#searchWindow').window("open");
 			}
 			
-			function doAssociations(){
-				$('#customerWindow').window('open');
+			function doSubAreaAssociations(){
+				var rows = $("#grid").datagrid("getSelections")
+				if(rows.length == 1)
+				{
+					$('#subAreaWindow').window('open');
+					
+					//1.先清空两个Select选框
+					$("#noassociationSubAreaSelect").empty();
+					$("#associationSubAreaSelect").empty();
+					
+					//2.找出未关联的客户(就是fixedAreaId为null)
+					$.post("../../fixedAreaAction_findUnAssociatedSubAreas.action",function(data){
+						for(var i=0;i<data.length;i++)
+						{
+							var id = data[i].id;
+							var keyWords = data[i].keyWords
+							var assistKeyWords = data[i].assistKeyWords
+							$("#noassociationSubAreaSelect").append("<option  value='"+id+"'>"+keyWords
+									+"["+assistKeyWords+"]"+"</option>")
+						}
+					})
+					
+					//3.找出已经关联的客户(就是fixedAreaId为null)
+					//var param = "{"+"'customerFixedAreaId':"+$("#customerFixedAreaId").val()+"}"
+					//alert(param)
+					
+					var id = rows[0].id
+					//alert(id)
+					$.post("../../fixedAreaAction_findAssociatedSubAreas.action","id="+id,function(data){
+						for(var i=0;i<data.length;i++)
+						{
+							var id = data[i].id;
+							var keyWords = data[i].keyWords
+							var assistKeyWords = data[i].assistKeyWords
+							$("#associationSubAreaSelect").append("<option  value='"+id+"'>"+keyWords
+									+"["+assistKeyWords+"]"+"</option>")
+						}
+					})
+				}
+				else
+				{
+					alert("必须只选择一个定区进行绑定")
+				}
 			}
 			
 			function doCustomerAssociations(){
@@ -78,9 +119,6 @@
 				{
 					alert("必须只选择一个定区进行绑定")
 				}
-				
-				
-				
 			}
 			
 			//工具栏
@@ -129,7 +167,7 @@
 				id : 'button-association2',
 				text : '关联分区',
 				iconCls : 'icon-sum',
-				handler : doAssociations
+				handler : doSubAreaAssociations
 			}];
 			// 定义列
 			var columns = [ [ {
@@ -308,7 +346,7 @@
 		</script>
 		
 		<script type="text/javascript">
-			function submitData() {
+			function submitFixedAreaFormData() {
 				if ($("#fixedAreaForm").form("validate")) {
 					$("#fixedAreaForm").submit()
 				}
@@ -324,6 +362,16 @@
 						$("#associationSelect option:selected"))
 			}
 			
+			function moveSubArea2Right() {
+				$("#associationSubAreaSelect").append(
+						$("#noassociationSubAreaSelect option:selected"))
+			}
+
+			function moveSubArea2Left() {
+				$("#noassociationSubAreaSelect").append(
+						$("#associationSubAreaSelect option:selected"))
+			}
+			
 			function associateCustomer2FixedArea() {
 				// 给定区ID赋值
 				var rows = $("#grid").datagrid("getSelections");
@@ -335,6 +383,20 @@
 
 				// 提交表单
 				$("#customerForm").submit();
+				
+			}
+			
+			function associateSubArea2FixedArea() {
+				// 给定区ID赋值
+				var rows = $("#grid").datagrid("getSelections");
+
+				$("#subAreaId").val(rows[0].id)
+				// 选中右侧的下拉框中所有的数据
+
+				$("#associationSubAreaSelect option").attr("selected", "selected")
+
+				// 提交表单
+				$("#subAreaForm").submit();
 				
 			}
 		</script>
@@ -359,7 +421,7 @@
 		<div class="easyui-window" title="定区添加修改" id="addWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 			<div style="height:31px;overflow:hidden;" split="false" border="false">
 				<div class="datagrid-toolbar">
-					<a id="save" icon="icon-save" href="javascript:submitData()" class="easyui-linkbutton" plain="true">保存</a>
+					<a id="save" icon="icon-save" href="javascript:submitFixedAreaFormData()" class="easyui-linkbutton" plain="true">保存</a>
 					</script>
 				</div>
 			</div>
@@ -501,6 +563,38 @@
 							<td colspan="3">
 								<a id="associationCourierBtn" href="javascript:associateCustomer2FixedArea()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">关联快递员</a>
 							 </td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+		
+		
+		<!-- 关联分区窗口 -->
+		<div modal="true" class="easyui-window" title="关联客户窗口" id="subAreaWindow" collapsible="false" closed="true" minimizable="false" maximizable="false" style="top:20px;left:200px;width: 400px;height: 300px;">
+			<div style="overflow:auto;padding:5px;" border="false">
+				<form id="subAreaForm" action="../../AreaAction_assignSubAreas2FixedArea.action" method="post">
+					<table class="table-edit" width="80%" align="center">
+						<tr class="title">
+							<td colspan="3">关联分区</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="hidden" name="id" id="subAreaId" />
+								<select id="noassociationSubAreaSelect" multiple="multiple" size="10">
+								</select>
+							</td>
+							<td>
+								<input type="button" value="》》" id="toSubAreaRight" onclick="moveSubArea2Right()">
+								<br/>
+								<input type="button" value="《《" id="toSubAreaLeft" onclick="moveSubArea2Left()">
+							</td>
+							<td>
+								<select id="associationSubAreaSelect" name="areaIds" multiple="multiple" size="10"></select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3"><a id="associationSubAreaBtn" href="javascript:associateSubArea2FixedArea()" class="easyui-linkbutton" data-options="iconCls:'icon-save'">关联分区</a> </td>
 						</tr>
 					</table>
 				</form>

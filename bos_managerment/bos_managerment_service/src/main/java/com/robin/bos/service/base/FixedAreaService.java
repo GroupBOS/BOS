@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.robin.bos.domain.base.Customer;
 import com.robin.bos.domain.base.FixedArea;
+import com.robin.bos.domain.base.SubArea;
 
 /**  
  * ClassName:FixedAreaService <br/>  
@@ -23,5 +24,11 @@ public interface FixedAreaService {
     public List<Customer> findAssociatedCustomers(Long customerFixedAreaId);
 
     public void assignCustomers2FixedArea(Long fixedAreaId, List<Long> customerIds);
+
+    public List<SubArea> findUnAssociatedSubAreas();
+
+    public List<SubArea> findAssociatedSubAreas(Long id);
+
+    public void assignSubAreas2FixedArea(Long id, List<Long> customerIds);
 }
   

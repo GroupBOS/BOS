@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 
 import com.robin.bos.domain.base.Customer;
 import com.robin.bos.domain.base.FixedArea;
+import com.robin.bos.domain.base.SubArea;
 import com.robin.bos.service.base.FixedAreaService;
 import com.robin.bos.web.action.BaseAction;
 
@@ -44,6 +45,11 @@ public class FixedAreaAction extends BaseAction<FixedArea> {
     private List<Long> customerIds;
     public void setCustomerIds(List<Long> customerIds) {
         this.customerIds = customerIds;
+    }
+    
+    private List<Long>  areaIds;
+    public void setAreaIds(List<Long> areaIds) {
+        this.areaIds = areaIds;
     }
     
     
@@ -77,7 +83,6 @@ public class FixedAreaAction extends BaseAction<FixedArea> {
     @Action(value="fixedAreaAction_findUnAssociatedCustomers")
     public String findUnAssociatedCustomers() throws IOException
     {
-        
         List<Customer> customers = fixedAreaService.findUnAssociatedCustomers();
         list2Json(customers, null);
         return NONE;
@@ -96,6 +101,40 @@ public class FixedAreaAction extends BaseAction<FixedArea> {
                      @Result(name=ERROR,type="redirect",location="/pages/base/fixed_area.html")})
     public String assignCustomers2FixedArea() {
         fixedAreaService.assignCustomers2FixedArea(getModel().getId(),customerIds);
+        
+        return SUCCESS;
+    }
+    
+    @Action(value="fixedAreaAction_findUnAssociatedSubAreas")
+    public String findUnAssociatedSubAreas() throws IOException
+    {
+        List<SubArea> subAreas = fixedAreaService.findUnAssociatedSubAreas();
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"fixedArea","area"});
+        list2Json(subAreas, jsonConfig);
+        return NONE;
+    }
+    
+    
+    
+    @Action(value="fixedAreaAction_findAssociatedSubAreas")
+    public String findAssociatedSubAreas() throws IOException
+    {
+        List<SubArea> subAreas = fixedAreaService.findAssociatedSubAreas(getModel().getId());
+        
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"fixedArea","area"});
+        
+        list2Json(subAreas, jsonConfig);
+        return NONE;
+    }
+    
+    
+    @Action(value="AreaAction_assignSubAreas2FixedArea",
+            results={@Result(name=SUCCESS,type="redirect",location="/pages/base/fixed_area.html"),
+                     @Result(name=ERROR,type="redirect",location="/pages/base/fixed_area.html")})
+    public String assignSubAreas2FixedArea() {
+        fixedAreaService.assignSubAreas2FixedArea(getModel().getId(),areaIds);
         
         return SUCCESS;
     }
