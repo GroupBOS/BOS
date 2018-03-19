@@ -102,6 +102,8 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter writer = response.getWriter();
         writer.write(json);
+        
+        System.out.println(json);
     }
     
     

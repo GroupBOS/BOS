@@ -2,6 +2,7 @@ package com.robin.bos.web.action.base;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -110,7 +111,8 @@ public class FixedAreaAction extends BaseAction<FixedArea> {
     {
         List<SubArea> subAreas = fixedAreaService.findUnAssociatedSubAreas();
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"fixedArea","area"});
+        //jsonConfig.setExcludes(new String[]{"fixedArea","area"});
+        jsonConfig.setExcludes(new String[]{"subareas","couriers"});
         list2Json(subAreas, jsonConfig);
         return NONE;
     }
@@ -123,8 +125,8 @@ public class FixedAreaAction extends BaseAction<FixedArea> {
         List<SubArea> subAreas = fixedAreaService.findAssociatedSubAreas(getModel().getId());
         
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"fixedArea","area"});
-        
+        //jsonConfig.setExcludes(new String[]{"fixedArea","area"});
+        jsonConfig.setExcludes(new String[]{"subareas","couriers"});
         list2Json(subAreas, jsonConfig);
         return NONE;
     }
