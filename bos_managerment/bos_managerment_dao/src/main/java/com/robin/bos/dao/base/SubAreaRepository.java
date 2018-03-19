@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import com.robin.bos.domain.base.FixedArea;
 import com.robin.bos.domain.base.SubArea;
@@ -20,6 +22,15 @@ public interface SubAreaRepository extends JpaRepository<SubArea, Long>,JpaSpeci
     List<SubArea> findByFixedArea(FixedArea fixedArea);
 
     SubArea findById(Long areaId);
+    
+    @Query("update SubArea set fixedArea = null where fixedArea.id = ?")
+    @Modifying
+    void unbindSubAreaByFixedArea(Long fixedAreaId);
+    
+    
+    @Query("update SubArea set fixedArea.id = ?2 where id = ?1")
+    @Modifying
+    void bindSubArea2FixedArea(Long subAreaId, Long fixedAreaId);
 
 }
   

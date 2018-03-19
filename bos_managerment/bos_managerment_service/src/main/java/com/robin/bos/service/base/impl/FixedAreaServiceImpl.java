@@ -107,54 +107,16 @@ public class FixedAreaServiceImpl implements FixedAreaService {
     @SuppressWarnings("unused")
     public void assignSubAreas2FixedArea(Long fixedAreaId, List<Long> subAreaIds) {
         
-        System.out.println("fixedAreaId:"+fixedAreaId);
-        FixedArea fixedArea = fixedAreaRepository.findById(fixedAreaId);
+        // 1.找出已经绑定了fixedArea的subArea,并将其全部置为null
+        subAreaRepository.unbindSubAreaByFixedArea(fixedAreaId);
+        
+        // 2.遍历传进来的subAreaIds,然后绑定fixedArea
         if(subAreaIds != null)
         {
-            List<SubArea> subAreas_old = subAreaRepository.findByFixedArea(fixedArea);
-            if(subAreaIds != null)
-            {
-                for (SubArea subArea : subAreas_old) {
-                    subArea.setFixedArea(null);
-                    subAreaRepository.saveAndFlush(subArea);
-                }
+            for (Long subAreaId : subAreaIds) {
+                subAreaRepository.bindSubArea2FixedArea(subAreaId, fixedAreaId);
             }
-            
-            
-            
-            System.out.println("Fuck not null");
-            Set<SubArea> subAreas = new HashSet<>();
-            System.out.println("fix:"+fixedArea);
-            for (Long areaId : subAreaIds) {
-                SubArea subArea = subAreaRepository.findById(areaId);
-                subArea.setFixedArea(fixedArea);
-                subAreaRepository.saveAndFlush(subArea);
-                subAreas.add(subArea);
-                System.out.println(areaId+":"+subArea);
-            }
-            
-            fixedArea.setSubareas(subAreas);
-            fixedAreaRepository.saveAndFlush(fixedArea);
-            
-        }else
-        {
-            System.out.println("Fuck null");
-            
-            
-            List<SubArea> subAreas = subAreaRepository.findByFixedArea(fixedArea);
-            if(subAreaIds != null)
-            {
-                for (SubArea subArea : subAreas) {
-                    subArea.setFixedArea(null);
-                    subAreaRepository.saveAndFlush(subArea);
-                }
-            }
-            
-            fixedArea.setSubareas(null);
-            fixedAreaRepository.saveAndFlush(fixedArea);
         }
-        
     }
-
 }
   
