@@ -14,11 +14,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.robin.bos.dao.base.CourierRepository;
 import com.robin.bos.dao.base.FixedAreaRepository;
 import com.robin.bos.dao.base.SubAreaRepository;
+import com.robin.bos.dao.base.TakeTimeRepository;
+import com.robin.bos.domain.base.Courier;
 import com.robin.bos.domain.base.Customer;
 import com.robin.bos.domain.base.FixedArea;
 import com.robin.bos.domain.base.SubArea;
+import com.robin.bos.domain.base.TakeTime;
 import com.robin.bos.service.base.FixedAreaService;
 
 /**  
@@ -35,6 +39,14 @@ public class FixedAreaServiceImpl implements FixedAreaService {
     
     @Autowired
     private SubAreaRepository subAreaRepository;
+    
+    
+    @Autowired
+    private CourierRepository courierRepository;
+    
+    
+    @Autowired
+    private TakeTimeRepository takeTimeRepository;
     
     @Override
     public Page<FixedArea> findAll(Pageable pageable) {
@@ -117,6 +129,24 @@ public class FixedAreaServiceImpl implements FixedAreaService {
                 subAreaRepository.bindSubArea2FixedArea(subAreaId, fixedAreaId);
             }
         }
+    }
+
+    @Override
+    public void associationCourier2FixedArea(Long fixedAreaId, Long courierId, Long takeTimeId) {
+          
+        FixedArea fixedArea = fixedAreaRepository.findById(fixedAreaId);
+        Courier courier = courierRepository.findById(courierId);
+        TakeTime takeTime = takeTimeRepository.findById(takeTimeId);
+        
+        Set<Courier> couriers = fixedArea.getCouriers();
+        if(couriers == null)
+        {
+            couriers = new HashSet<Courier>();
+        }
+        
+        courier.setTakeTime(takeTime);
+        couriers.add(courier);
+        fixedArea.setCouriers(couriers);
     }
 }
   

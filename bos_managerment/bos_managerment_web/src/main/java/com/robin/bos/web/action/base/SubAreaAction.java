@@ -49,16 +49,15 @@ public class SubAreaAction extends BaseAction<SubArea> {
     @Action(value="subareaAction_pageQuery")
     public String pageQuery() throws IOException {
         Pageable pageable = new PageRequest(page-1, rows);
-        
+
         Page<SubArea> page = subAreaService.findAll(pageable);
-        
-        //JsonConfig jsonConfig = new JsonConfig();
-        //jsonConfig.setExcludes(new String[]{"area"});
-        
-        page2Json(page, null);
-        
+
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"fixedArea","area"});
+
+        page2Json(page, jsonConfig);
+
         return NONE;
     }
-    
 }
   

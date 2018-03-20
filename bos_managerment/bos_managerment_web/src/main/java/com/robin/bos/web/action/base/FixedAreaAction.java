@@ -53,6 +53,16 @@ public class FixedAreaAction extends BaseAction<FixedArea> {
         this.areaIds = areaIds;
     }
     
+    private Long courierId;
+    public void setCourierId(Long courierId) {
+        this.courierId = courierId;
+    }
+    
+    private Long takeTimeId;
+    public void setTakeTimeId(Long takeTimeId) {
+        this.takeTimeId = takeTimeId;
+    }
+    
     
     @Action(value ="fixedAreaAction_pageQuery")
     public String pageQuery() throws IOException
@@ -138,6 +148,16 @@ public class FixedAreaAction extends BaseAction<FixedArea> {
     public String assignSubAreas2FixedArea() {
         fixedAreaService.assignSubAreas2FixedArea(getModel().getId(),areaIds);
         
+        return SUCCESS;
+    }
+    
+    
+    @Action(value="fixedAreaAction_associationCourierToFixedArea",
+    results={@Result(name=SUCCESS,type="redirect",location="/pages/base/fixed_area.html"),
+             @Result(name=ERROR,type="redirect",location="/pages/base/fixed_area.html")})
+    public String associationCourier2FixedArea()
+    {
+        fixedAreaService.associationCourier2FixedArea(getModel().getId(),courierId,takeTimeId);
         return SUCCESS;
     }
     

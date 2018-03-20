@@ -180,6 +180,22 @@ public class CourierAction extends BaseAction<Courier>{
         }
         return SUCCESS;
     }
+    
+    
+    @Action(value="courierAction_findAvalible")
+    public String listajax() throws IOException
+    {
+        List<Courier> list = courierSerivce.findAvalible();
+
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"fixedAreas","takeTime"});
+        list2Json(list, jsonConfig);
+        return NONE;
+    }
+    
+    
+    
+    
 
 }
   

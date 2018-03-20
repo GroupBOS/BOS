@@ -30,5 +30,7 @@ public interface FixedAreaService {
     public List<SubArea> findAssociatedSubAreas(Long id);
 
     public void assignSubAreas2FixedArea(Long id, List<Long> customerIds);
+
+    public void associationCourier2FixedArea(Long fixedAreaId, Long courierId, Long takeTimeId);
 }
   

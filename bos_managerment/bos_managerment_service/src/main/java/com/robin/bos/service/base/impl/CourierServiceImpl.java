@@ -48,9 +48,13 @@ public class CourierServiceImpl implements CourierService {
 
     @Override
     public Page<Courier> findAll(Specification<Courier> specification, Pageable pageable) {
-          
-        // TODO Auto-generated method stub  
         return courierRepository.findAll(specification,pageable);
+    }
+
+    @Override
+    public List<Courier> findAvalible() {
+        
+        return courierRepository.findAvalible();
     }
 
 }
