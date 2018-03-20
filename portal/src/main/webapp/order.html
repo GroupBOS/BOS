@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>下单页面</title>
+		<link rel="stylesheet" type="text/css" href="plugins/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="plugins/city-picker.css">
+		<link rel="stylesheet" type="text/css" href="css/public.css">
+		<link rel="stylesheet" type="text/css" href="css/nav.css">
+		<link rel="stylesheet" type="text/css" href="css/styleorder.css">
+		<script src="plugins/jquery.min.js" type="text/javascript"></script>
+		<script src="plugins/bootstrap.min.js" type="text/javascript"></script>
+		<script src="http://nervgh.github.io/js/es5-shim.min.js"></script>
+		<script src="http://nervgh.github.io/js/es5-sham.min.js"></script>
+		<script src="plugins/console-sham.min.js" type="text/javascript"></script>
+		<script src="plugins/city-picker.data.js" type="text/javascript"></script>
+		<script src="plugins/city-picker.js" type="text/javascript"></script>
+		<script src="js/city-choose.js" type="text/javascript"></script>
+		<script src="js/nav.js" type="text/javascript"></script>
+		<script type="text/javascript" 
+			src="http://api.map.baidu.com/api?v=2.0&ak=4IU3oIAMpZhfWZsMu7xzqBBAf6vMHcoa">
+		</script>
+	</head>
+	<body>
+		<!--nav-->
+		<div id="headnav">
+			<div class="mainnav">
+				<nav class="nav navbar-default">
+					<div class="container">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						        <span class="sr-only">折叠菜单</span>
+						        <span class="icon-bar"></span>
+						        <span class="icon-bar"></span>
+						        <span class="icon-bar"></span>
+			               	</button>
+							<a class="navbar-brand" href="#"><img src="img/icon/logo.png"></a>
+						</div>
+						<div class="collapse navbar-collapse">
+							<ul class="nav navbar-nav navbar-right" id="menu">
+								<li>
+									<a href="index.html" target="_blank">首页</a>
+								</li>
+								<li>
+									<a href="order.html" target="_blank">在线下单</a>
+								</li>
+								<li>
+									<a href="express_manage.html" target="_blank">快件管理</a>
+								</li>
+								<li>
+									<a href="userinfo.html" target="_blank">账户管理</a>
+								</li>
+								<li>
+									<a href="search.html" target="_blank">查询服务</a>
+								</li>
+								<li>
+									<a href="myhome.html" target="_blank">我的主页</a>
+								</li>
+								<li>
+									<a href="login.html" target="_blank">登录</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<div class="order">
+			<!-- orderall -->
+			<section>
+				<div class="tab-title ">
+					<ul class="nav nav-tabs container" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#home" aria-controls="home" role="tab" data-toggle="tab">单件下单</a>
+						</li>
+						<li role="presentation">
+							<a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">批量下单</a>
+						</li>
+					</ul>
+					</ul>
+				</div>
+				<div class="tab-content container">
+					<div class="jiangli">
+						<div class="col-md-4 xiaojf">
+							<h5>消费积分奖励</h5>
+							<p class="grey">消费1元积1分，累计积分兑好礼</p>
+						</div>
+						<div class="col-md-4 tenjf">
+							<h5>消费积分奖励</h5>
+							<p class="grey">消费1元积1分，累计积分兑好礼</p>
+						</div>
+						<div class="col-md-4 qianjf">
+							<h5>消费积分奖励</h5>
+							<p class="grey">消费1元积1分，累计积分兑好礼</p>
+						</div>
+					</div>
+					<div role="tabpanel" class="tab-pane fade in active" id="home">
+						<ul class="nav nav-tabs">
+							<li role="presentation" class="active">
+								<a href="#one" aria-controls="home" role="tab" data-toggle="tab">国内</a>
+							</li>
+							<li role="presentation">
+								<a href="#two" aria-controls="profile" role="tab" data-toggle="tab">港澳台</a>
+							</li>
+						</ul>
+						<form action="orderAction_add.action" id="orderForm1" method="post">
+						<div class="tab-content">
+							<div role="tabpanel" class="tab-pane fade in active" id="one">
+								<!--寄件人信息 -->
+								<div class="model">
+									<div class="areatitle">
+										<h4><span class="zhezhao">寄件人信息</span></h4>
+									</div>
+									<div class="col-md-5">
+											<div class="orderinfo">
+												<div class="form-group " id="sender-group">
+													<label class="col-sm-3 control-label"><b>*</b>姓名：</label>
+													<div class="col-sm-8 input-group" style="padding:0 15px;">
+														<input name="sendName" type="text" class="form-control" placeholder="请输入发件人姓名" required="required">
+													</div>
+												</div>
+												<div class="form-group" id="mobile-group">
+													<label class="col-sm-3 control-label"><b>*</b>联系方式：</label>
+													<div class="col-sm-8">
+														<input name="sendMobile" type="text" class="form-control" placeholder="请输入联系电话" required="required">
+													</div>
+												</div>
+												<div class="form-group" id="sendcompany-group">
+													
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label">省市区：</label>
+													<div class="col-sm-8 province">
+														<div class="docs-methods">
+																<div id="distpicker">
+																	<div class="form-group">
+																	<br>
+																		<div class="innercity">
+																			<input name="sendAreaInfo" id="city-picker-1" class="form-control" readonly type="text" value="" data-toggle="city-picker">
+																		</div>
+																		<button class="btn btn-warning" id="resetBtn" type="button" style="float: right;padding: 8px;">重置</button>
+																		<script type="text/javascript">
+																			$(function(){
+																				$("#resetBtn").click(function(){
+																					$("#city-picker-1").citypicker("reset");
+																				});
+																			});
+																		</script>
+																	</div>
+																</div>
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputPassword" class="col-sm-3 control-label"><b>*</b>详细地址：</label>
+													<div class="col-sm-8">
+														<input name="sendAddress" id="sendAddress" type="text" class="form-control" 
+																placeholder="街道详细（精确到门牌号） " required="required">
+														<script type="text/javascript">
+															$(function(){
+																var ac = new BMap.Autocomplete({
+																	input:"sendAddress"
+																});
+															});
+														</script>
+														<p class="error">
+															请填写正确的信息
+														</p>
+													</div>
+												</div>
+											</div>
+									</div>
+									<div class="col-md-7"></div>
+								</div>
+								<!--收件人信息 -->
+								<div class="model clearfix">
+									<div class="areatitle">
+										<h4><span class="zhezhao">收件人信息</span></h4>
+									</div>
+									<div class="col-md-5">
+											<div class="orderinfo">
+												<div class="form-group" id="sender-group">
+													<label class="col-sm-3 control-label"><b>*</b>姓名：</label>
+													<div class="col-sm-8 input-group" style="padding:0 15px;">
+														<input name="recName" type="text" style="z-index: 0" class="form-control" placeholder="请输入收件人姓名" required="required">
+													</div>
+												</div>
+												<div class="form-group" id="mobile-group">
+													<label class="col-sm-3 control-label"><b>*</b>联系方式：</label>
+													<div class="col-sm-8">
+														<input name="recMobile" type="text" class="form-control" placeholder="请输入联系电话" required="required">
+													</div>
+												</div>
+												<div class="form-group" id="sendcompany-group">
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label">省市区：</label>
+													<div class="col-sm-8 province">
+														<div class="docs-methods">
+																<div id="distpicker">
+																	<div class="form-group">
+																		<br>
+																		<div class="innercity">
+																			<input name="recAreaInfo" id="city-picker-2" class="form-control" readonly type="text" value="" data-toggle="city-picker">
+																		</div>
+																		<button class="btn btn-warning" id="reset2" type="button" style="float: right;padding: 8px;">重置</button>
+																	</div>
+																</div>
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputPassword" class="col-sm-3 control-label"><b>*</b>详细地址：</label>
+													<div class="col-sm-8">
+														<input id="recAddress" name="recAddress" type="text" class="form-control" placeholder="街道详细（精确到门牌号） " required="required">
+														<script type="text/javascript">
+															$(function(){
+																var ac = new BMap.Autocomplete({
+																	input:'recAddress'
+																});
+															});
+														</script>
+													</div>
+												</div>
+											</div>
+									</div>
+									<div class="col-md-7"></div>
+								</div>
+								<!--快件信息 -->
+								<div class="model clearfix">
+									<div class="areatitle">
+										<h4><span class="zhezhao">快件信息</span></h4>
+									</div>
+									<div class="col-md-5">
+											<div class="orderinfo">
+												<div class="form-group" id="sender-group">
+													<label class="col-sm-3 control-label"><b>*</b>拖寄物：</label>
+													<div class="col-sm-8">
+														<select name="goodsType" class="form-control">
+															<option value="1">文件</option>
+															<option value="2">衣服</option>
+															<option value="3">食品</option>
+															<option value="4">电子产品</option>
+															<option value="5">其他</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group" id="mobile-group">
+													<label class="col-sm-3 control-label">重量：</label>
+													<div class="col-sm-8">
+														<input name="weight" type="text" class="form-control" placeholder="请输入联系电话" required="required">
+													</div>
+												</div>
+												<div class="form-group" id="sendcompany-group">
+													<label class="col-sm-3 control-label">备注：</label>
+													<div class="col-sm-8">
+														<input name="remark" type="text" class="form-control" placeholder="备注不超过20个字">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputPassword" class="col-sm-3 control-label">付款方式：</label>
+													<div class="col-sm-8">
+														<select name="payTypeNum" class="form-control">
+															<option value="1">寄付日结</option>
+															<option value="2">寄付月结</option>
+															<option value="3">到付</option>
+														</select>
+													</div>
+												</div>
+												</div>
+										</div>
+										<div class="col-md-7"></div>
+									</div>
+									<div class="model clearfix">
+										<div class="col-md-5">
+												<div class="orderinfo">
+													<div class="form-group" id="mobile-group">
+														<label class="col-sm-3 control-label">给小哥捎话：</label>
+														<div class="col-sm-8">
+															<input name="sendMobileMsg" type="text" class="form-control" placeholder="有什么要提醒快递员的吗？" required="required">
+														</div>
+													</div>
+												</div>
+										</div>
+										<div class="col-md-7"></div>
+									</div>
+										<div class="addorder clearfix">
+											<p class="text-center">
+											</p>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane fade" id="two">港澳台待定</div>
+								</div>
+								</form>
+							</div>
+							<div class="col-md-11 submit">
+								<div class="xieyi"><input type="checkbox" checked="checked" />我已阅读并同意《快件运单契约条款》 </div>
+								<div class="tijiao">
+									<div class="tjtext">
+										<p class="red">1、如果您在周六、日等法定节假日期间寄件，将会做相应加时。（以上“预计时效”已做相应加时）</p>
+										<p class="red">2、如果您收方地址属于偏远地区，在“预计时效”基础上需增加0.5天.</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-1 ordertj">
+								<a href="javascript:$('#orderForm1').submit();" class="btn btn-danger">提交</a>
+							</div>
+						</div>
+			</section>
+			</div>
+			<div class="nav-bottom"></div>
+			<a href="#0" class="cd-top">Top</a>
+	</body>
+</html>
