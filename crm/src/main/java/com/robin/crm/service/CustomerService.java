@@ -47,6 +47,10 @@ public interface CustomerService {
     @Path("/assignCustomers2FixedArea")
     public void assignCustomers2FixedArea(@QueryParam("fixedAreaId")Long fixedAreaId,@QueryParam("customerIds")List<Long> customerIds);
     
+    @PUT
+    @Path("save")
+    public Customer save(Customer customer);
+    
     
 }
   

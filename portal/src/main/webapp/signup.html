@@ -55,10 +55,17 @@
 											var nums = 60;
 											var btn;
 											function sendCode(thisBtn) {
-												btn = thisBtn;
-												btn.disabled = true; //将按钮置为不可点击
-												btn.value = nums + '秒后重新获取';
-												clock = setInterval(doLoop, 1000); //一秒执行一次
+												var telephone = $("#telephone").val()
+												var reg = new RegExp("^1[3456789]\\d{9}$")
+												if(reg)
+												{
+													btn = thisBtn;
+													btn.disabled = true; //将按钮置为不可点击
+													btn.value = nums + '秒后重新获取';
+													clock = setInterval(doLoop, 1000); //一秒执行一次
+													$.post("customerAction_sendSMS.action",
+															"telephone="+ telephone);
+												}
 											}
 											function doLoop() {
 												nums--;

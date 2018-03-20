@@ -8,4 +8,21 @@
   <groupId>com.robin</groupId>
   <artifactId>robinUtils</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>com.aliyun</groupId>
+  		<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+  		<version>1.0.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.aliyun</groupId>
+  		<artifactId>aliyun-java-sdk-core</artifactId>
+  		<version>3.3.1</version>
+  	</dependency>
+  
+  
+  </dependencies>
+  
+  
 </project>
