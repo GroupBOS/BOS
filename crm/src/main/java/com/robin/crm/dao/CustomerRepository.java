@@ -29,5 +29,17 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,JpaSpe
     @Modifying
     void bindCustomer2FixedArea(Long customerId, String fixedAreaId);
 
+    
+    @Query("update Customer set type = 1 where telephone = ?")
+    @Modifying
+    void actvive(String telephone);
+
+    @Query("from Customer where telephone = ? and nvl(type,0) = 1")
+    Customer isActived(String telephone);
+
+    Customer findByTelephone(String telephone);
+
+    Customer findByTelephoneAndPassword(String telephone, String password);
+
 }
   

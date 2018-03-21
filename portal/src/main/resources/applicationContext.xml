@@ -29,4 +29,38 @@
 	
 	<!--开启事务开关-->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="300" />
+		<property name="maxWaitMillis" value="3000" />
+		<property name="testOnBorrow" value="true" />
+	</bean>
+	<!-- jedis 连接工厂 -->
+	<!--
+		#############################根据实际情况修改Redis服务器地址和端口号#############################
+	-->
+	<bean id="redisConnectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="hostName" value="localhost" />
+		<property name="port" value="6379" />
+		<property name="password" value="123456" />
+		<property name="poolConfig" ref="poolConfig" />
+	</bean>
+	<!-- spring data 提供的 redis模板 -->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="redisConnectionFactory" />
+		<property name="keySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="valueSerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer">
+			</bean>
+		</property>
+	</bean>
+	
+	
+	
 </beans>

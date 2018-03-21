@@ -48,8 +48,22 @@ public interface CustomerService {
     public void assignCustomers2FixedArea(@QueryParam("fixedAreaId")Long fixedAreaId,@QueryParam("customerIds")List<Long> customerIds);
     
     @PUT
-    @Path("save")
+    @Path("/save")
     public Customer save(Customer customer);
+    
+    @PUT
+    @Path("/active")
+    public void active(@QueryParam("telephone")String telephone);
+    
+    
+    @GET
+    @Path("/findByTelephone")
+    public Customer findByTelephone(@QueryParam("telephone")String telephone);
+    
+    @GET
+    @Path("/findByTelephoneAndPassword")
+    public Customer findByTelephoneAndPassword(@QueryParam("telephone")String telephone,
+                                               @QueryParam("password")String password);
     
     
 }
