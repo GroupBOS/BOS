@@ -42,8 +42,7 @@ public class Area {
     private String shortcode; // 简码
 
     @OneToMany(mappedBy = "area")
-    //若不加上 transient,会导致查询subArea时,当查询到subArea.area时,会递归查询subareas,造成死循环
-    private transient Set<SubArea> subareas = new HashSet<SubArea>();
+    private Set<SubArea> subareas = new HashSet<SubArea>();
     
 
     public String getName() {
