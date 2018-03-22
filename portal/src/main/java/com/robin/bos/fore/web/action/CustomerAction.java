@@ -60,6 +60,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
     }
     
     
+    
     private Customer model = new Customer();
     
     @Override
@@ -177,47 +178,62 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
                             type = "redirect")})
     public String login()
     {
-        //获取手机号和密码
-        
-        //判断是否激活,如果已激活,将Customer保存在session中
-        if(StringUtils.isNotEmpty(getModel().getTelephone()))
+        //获取验证码
+        String server_checkcode = (String) ServletActionContext.getRequest().getSession().getAttribute("validateCode");
+        System.out.println("server_checkcode:"+server_checkcode);
+        System.out.println("checkcode:"+checkcode);
+        if(StringUtils.isNotEmpty(server_checkcode) && 
+           StringUtils.isNotEmpty(checkcode) &&
+           server_checkcode.equals(checkcode))
         {
-            Customer customer = WebClient.create("http://localhost:8010/crm/crm/CustomerService/findByTelephone"). 
-            type(MediaType.APPLICATION_JSON).
-            accept(MediaType.APPLICATION_JSON).
-            query("telephone", getModel().getTelephone()).
-            get(Customer.class);
-            if(customer != null && customer.getType() != null)
+          //获取手机号和密码
+            //判断是否激活,如果已激活,将Customer保存在session中
+            if(StringUtils.isNotEmpty(getModel().getTelephone()))
             {
-                if(customer.getType() == 1)
+                Customer customer = WebClient.create("http://localhost:8010/crm/crm/CustomerService/findByTelephone"). 
+                type(MediaType.APPLICATION_JSON).
+                accept(MediaType.APPLICATION_JSON).
+                query("telephone", getModel().getTelephone()).
+                get(Customer.class);
+                if(customer != null && customer.getType() != null)
                 {
-                    //如果已经激活,则向数据库查询
-                    Customer c = WebClient.create("http://localhost:8010/crm/crm/CustomerService/findByTelephoneAndPassword").
-                    type(MediaType.APPLICATION_JSON).
-                    accept(MediaType.APPLICATION_JSON).
-                    query("telephone", getModel().getTelephone()).
-                    query("password", getModel().getPassword()).
-                    get(Customer.class);
-                    if(c != null)
+                    if(customer.getType() == 1)
                     {
-                        HttpSession session = ServletActionContext.getRequest().getSession();
-                        session.setAttribute("customer", c);
-                        return SUCCESS;
+                        //如果已经激活,则向数据库查询
+                        Customer c = WebClient.create("http://localhost:8010/crm/crm/CustomerService/findByTelephoneAndPassword").
+                        type(MediaType.APPLICATION_JSON).
+                        accept(MediaType.APPLICATION_JSON).
+                        query("telephone", getModel().getTelephone()).
+                        query("password", getModel().getPassword()).
+                        get(Customer.class);
+                        if(c != null)
+                        {
+                            HttpSession session = ServletActionContext.getRequest().getSession();
+                            session.setAttribute("customer", c);
+                            return SUCCESS;
+                        }
+                        else
+                        {
+                            System.out.println("手机号/密码不匹配");
+                            return ERROR;
+                        }
+                    }
+                    else
+                    {
+                        //如果未激活,返回unactived
+                        //TODO:需要加入错误信息
+                        System.out.println("该用户未激活");
+                        return "unactived";
                     }
                 }
-                else
-                {
-                    //如果未激活,返回unactived
-                    //TODO:需要加入错误信息
-                    return "unactived";
-                }
+                System.out.println("无法根据手机号找到该用户");
+                return ERROR;
             }
-            System.out.println("找不到该用户");
+            System.out.println("获取手机号失败");
             return ERROR;
         }
-        System.out.println("获取手机号失败");
+        System.out.println("验证码校验失败");
         return ERROR;
     }
-
 }
   

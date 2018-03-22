@@ -50,8 +50,16 @@
 										<input type="text" name="checkcode" class="form-control" id="inputaccount" placeholder="请输入验证码">
 									</div>
 									<div class="col-sm-3">
-										<img id="vcode"src="validatecode.jsp">
+										<img id="vcode"src="validatecode.jsp" onclick="changeSrc()">
 									</div>
+									
+									<script type="text/javascript">
+										function changeSrc()
+										{
+											//这个+Math.random()应该只是起到一个保证能刷新的作用,保证JSP程序能够跑起
+											$("#vcode").attr("src","validatecode.jsp?"+Math.random())
+										}
+									</script>
 								</div>
 								<div class="form-group">
 									<div class="col-sm-offset-4 col-sm-4">
