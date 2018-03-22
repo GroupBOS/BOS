@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css"
+	href="../js/citypicker/css/city-picker.css">
+<script src="../plugins/jquery.min.js" type="text/javascript"></script>
+<script src="../js/citypicker/js/city-picker.data.js"></script>
+<script src="../js/citypicker/js/city-picker.js"></script>
+<script type="text/javascript">
+
+$(function() {
+	$('#target').citypicker();
+})
+
+function clearContent() {
+	$('#target').citypicker("reset");
+}
+
+</script>
+
+</head>
+<body>
+<!-- 
+<div style="position:relative;">
+  <input readonly type="text" data-toggle="city-picker" data-responsive="true" style="width:50%;">
+</div> -->
+
+	<div style="position: relative;">
+		<input readonly type="text" data-toggle="city-picker" style="width: 400px">
+	</div>
+
+	<br>
+	<br>
+	<br>
+	<br>
+	<div style="position: relative;">
+		<input id="target" style="width: 300px"> 
+		<input type="button" value="清空" onclick="clearContent()">
+	</div>
+
+</body>
+</html>
