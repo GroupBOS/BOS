@@ -32,5 +32,7 @@ public interface SubAreaRepository extends JpaRepository<SubArea, Long>,JpaSpeci
     @Modifying
     void bindSubArea2FixedArea(Long subAreaId, Long fixedAreaId);
 
+    SubArea findByKeyWords(String keyWord);
+
 }
   

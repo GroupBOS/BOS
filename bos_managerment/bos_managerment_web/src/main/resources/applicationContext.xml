@@ -4,7 +4,9 @@
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:aop="http://www.springframework.org/schema/aop"
-    xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
     xsi:schemaLocation="
     	http://www.springframework.org/schema/tx
     	http://www.springframework.org/schema/tx/spring-tx.xsd
@@ -13,8 +15,10 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-        http://www.springframework.org/schema/data/jpa 
-		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+        http://www.springframework.org/schema/data/jpa
+		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://cxf.apache.org/jaxrs
+		http://cxf.apache.org/schemas/jaxrs.xsd">
         
 	
 	<!--引用jdbc.properties-->
@@ -77,13 +81,32 @@
 	<!--开启事务开关-->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
-	        
-	        
 	<!--
 		#########################################################
 		指定Spring Data JPA要进行扫描的包,该包中的类框架会自动为其创建代理
 		#########################################################
 	-->
-	<jpa:repositories base-package="com.robin.bos.dao" />   
+	<jpa:repositories base-package="com.robin.bos.dao"/>
+	
+	<bean id="serviceBean" class="com.robin.bos.service.take_delivery.impl.OrderServiceImpl"></bean>
+	<jaxrs:server address="/orderService">
+			<jaxrs:serviceBeans>
+				<ref bean="serviceBean" />
+			</jaxrs:serviceBeans>
+	
+			<jaxrs:inInterceptors>
+				<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+			</jaxrs:inInterceptors>
+			<!--
+				拦截响应信息,非必须
+				设置后,可以在控制台观察到响应信息
+			-->
+			<jaxrs:outInterceptors>
+				<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+			</jaxrs:outInterceptors>
+		</jaxrs:server>
+	
+	
+	
         
 </beans>

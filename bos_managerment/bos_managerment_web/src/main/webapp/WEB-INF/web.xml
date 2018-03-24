@@ -21,6 +21,16 @@
   </context-param>
   
   
+  <servlet>
+		<servlet-name>cxf</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>cxf</servlet-name>
+		<url-pattern>/webService/*</url-pattern>
+	</servlet-mapping>
+  
+  
 	<!-- <filter>
 		<filter-name>OpenSession</filter-name>
 		<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>

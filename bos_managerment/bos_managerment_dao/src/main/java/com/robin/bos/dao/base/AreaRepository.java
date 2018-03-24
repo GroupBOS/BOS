@@ -20,6 +20,8 @@ public interface AreaRepository extends JpaRepository<Area , Long>,JpaSpecificat
     @Query("from Area where province like ?1 or city like ?1 or district like ?1 or citycode like ?1 or shortcode like ?1")
     List<Area> findByQ(String q);
 
+    Area findByProvinceAndCityAndDistrict(String province,String city,String district);
+
     
 }
   
