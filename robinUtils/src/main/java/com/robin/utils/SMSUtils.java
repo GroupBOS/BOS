@@ -14,6 +14,7 @@ import com.aliyuncs.http.HttpResponse;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,17 +30,21 @@ public class SMSUtils {
     //产品域名,开发者无需替换
     static final String domain = "dysmsapi.aliyuncs.com";
 
-    // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
-    static final String accessKeyId = "LTAIR7Nj4AZjCrIE";
-    static final String accessKeySecret = "owGLrWk9v8qBZ3jtz7IqNDROx8RNZR";
+    /*// TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
+    static final String accessKeyId = "";
+    static final String accessKeySecret = "";
     
     //必填:短信签名-可在短信控制台中找到
-    static final String signName = "BOS物流管理系统";
+    static final String signName = "";
     
     //必填:短信模板-可在短信控制台中找到
-    static final String templateCode = "SMS_127930022";
+    static final String templateCode = "";*/
     
-    public static SendSmsResponse sendSms(String telePhone,String code) throws ClientException {
+    public static SendSmsResponse sendSms(String telePhone,String code) throws ClientException, IOException {
+        String accessKeyId = SMSPropertiesParser.parser("accessKeyId");
+        String accessKeySecret = SMSPropertiesParser.parser("accessKeySecret");
+        String signName = SMSPropertiesParser.parser("signName");
+        String templateCode = SMSPropertiesParser.parser("templateCode");
 
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
@@ -77,7 +82,11 @@ public class SMSUtils {
     }
 
 
-    public static QuerySendDetailsResponse querySendDetails(String bizId,String telePhone) throws ClientException {
+    public static QuerySendDetailsResponse querySendDetails(String bizId,String telePhone) throws ClientException, IOException {
+        String accessKeyId = SMSPropertiesParser.parser("accessKeyId");
+        String accessKeySecret = SMSPropertiesParser.parser("accessKeySecret");
+        String signName = SMSPropertiesParser.parser("signName");
+        String templateCode = SMSPropertiesParser.parser("templateCode");
 
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");

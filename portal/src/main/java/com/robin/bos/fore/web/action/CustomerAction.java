@@ -1,5 +1,6 @@
 package com.robin.bos.fore.web.action;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpSession;
@@ -119,7 +120,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
     }
     
     @Action("customerAction_sendSMS")
-    public String sendSMS() throws ClientException{
+    public String sendSMS() throws ClientException, IOException{
         //生成验证码
         String code = RandomStringUtils.randomNumeric(6);
         System.out.println(code);
