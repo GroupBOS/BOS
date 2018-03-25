@@ -7,6 +7,8 @@
     xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:jms="http://www.springframework.org/schema/jms"
     xsi:schemaLocation="
     	http://www.springframework.org/schema/tx
     	http://www.springframework.org/schema/tx/spring-tx.xsd
@@ -18,7 +20,11 @@
         http://www.springframework.org/schema/data/jpa
 		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 		http://cxf.apache.org/jaxrs
-		http://cxf.apache.org/schemas/jaxrs.xsd">
+		http://cxf.apache.org/schemas/jaxrs.xsd
+		http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms.xsd
+		http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd">
         
 	
 	<!--引用jdbc.properties-->

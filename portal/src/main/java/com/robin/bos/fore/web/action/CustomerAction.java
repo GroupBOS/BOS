@@ -3,6 +3,10 @@ package com.robin.bos.fore.web.action;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.Session;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,6 +22,9 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.jms.core.JmsMessagingTemplate;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -73,6 +80,9 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
     
+    @Autowired
+    private JmsTemplate jmsTemplate;
+    
     
     
     @Action(value="customerAction_regist",results={@Result(name=SUCCESS,type="redirect",location="/signup-success.html"),
@@ -122,7 +132,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
     @Action("customerAction_sendSMS")
     public String sendSMS() throws ClientException, IOException{
         //生成验证码
-        String code = RandomStringUtils.randomNumeric(6);
+        final String code = RandomStringUtils.randomNumeric(6);
         System.out.println(code);
         
         //保存在session中
@@ -135,12 +145,26 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
         String telePhone = model.getTelephone();
         System.out.println("telephone:"+telePhone);
         
-        SendSmsResponse smsResponse = SMSUtils.sendSms(telePhone, code);
+        /*SendSmsResponse smsResponse = SMSUtils.sendSms(telePhone, code);
         System.out.println("短信接口返回的数据----------------");
         System.out.println("Code=" + smsResponse.getCode());
         System.out.println("Message=" + smsResponse.getMessage());
         System.out.println("RequestId=" + smsResponse.getRequestId());
-        System.out.println("BizId=" + smsResponse.getBizId());
+        System.out.println("BizId=" + smsResponse.getBizId());*/
+        
+        //改为通过middleware来发送,middleware充当了一个activeMQ的consumer
+        //需要一个activeMQ的producer(jmsQueueTemplate)去send
+        System.out.println("send msg...");
+        jmsTemplate.send("sms", new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                MapMessage mapMessage = session.createMapMessage();
+                mapMessage.setString("tel", model.getTelephone());
+                mapMessage.setString("code",code);
+                return mapMessage;
+            }
+        });
+        
         return NONE;
     }
     
