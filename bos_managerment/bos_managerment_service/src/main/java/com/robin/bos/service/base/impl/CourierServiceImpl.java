@@ -2,6 +2,7 @@ package com.robin.bos.service.base.impl;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +47,7 @@ public class CourierServiceImpl implements CourierService {
         return courierRepository.findAll(page);
     }
 
+    
     @Override
     public Page<Courier> findAll(Specification<Courier> specification, Pageable pageable) {
         return courierRepository.findAll(specification,pageable);

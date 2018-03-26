@@ -15,6 +15,7 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -165,6 +166,8 @@ public class CourierAction extends BaseAction<Courier>{
         this.ids = ids;
     }
 
+    
+    @RequiresPermissions(value="courier_batchDel")
     @Action(value="courier_batchDel",
             results={@Result(name=SUCCESS,type="redirect",location="/pages/base/courier.html"),
                      @Result(name=ERROR,type="redirect",location="/pages/base/courier.html")})
