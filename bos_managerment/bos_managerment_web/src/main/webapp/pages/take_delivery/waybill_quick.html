@@ -31,11 +31,11 @@
 					editIndex = 0;
 				}
 			}
-			
+
 			function doSave(){
 				$("#grid").datagrid('endEdit',editIndex );
 			}
-			
+
 			function doCancel(){
 				if(editIndex!=undefined){
 					$("#grid").datagrid('cancelEdit',editIndex);
@@ -45,7 +45,7 @@
 					editIndex = undefined;
 				}
 			}
-			
+
 			//工具栏
 			var toolbar = [ {
 				id : 'button-add',	
@@ -70,13 +70,13 @@
 				width : 120,
 				align : 'center',
 				editor :{
-					type : 'validatebox',
+					type : 'numberbox',
 					options : {
 						required: true
 					}
 				}
 			}, {
-				field : 'arrivecity',
+				field : 'arriveCity',
 				title : '到达地',
 				width : 120,
 				align : 'center',
@@ -90,7 +90,7 @@
 				field : 'product',
 				title : '产品',
 				width : 120,
-				align : 'center',
+				align : 'text',
 				editor :{
 					type : 'validatebox',
 					options : {
@@ -151,12 +151,22 @@
 					columns : columns,
 					onDblClickRow : doDblClickRow,
 					onAfterEdit : function(rowIndex, rowData, changes){
-						console.info(rowData);
+						console.info("rowData:"+rowData);
 						editIndex = undefined;
+						console.info("changes:"+changes);
+						var url = "../../waybillAction_save.action";
+						$.post(url,rowData,function(data)
+						{
+							if(data == "0")
+							{
+								alert("数据插入失败!")
+							}
+						})
+						
 					}
 				});
 			});
-		
+
 			function doDblClickRow(rowIndex, rowData){
 				alert("双击表格数据...");
 				console.info(rowIndex);

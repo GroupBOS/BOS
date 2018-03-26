@@ -307,4 +307,20 @@ public class WayBill {
         this.delTag = delTag;
     }
 
+    @Override
+    public String toString() {
+        return "WayBill [id=" + id + ", wayBillNum=" + wayBillNum + ", order=" + order
+                + ", sendName=" + sendName + ", sendMobile=" + sendMobile + ", sendCompany="
+                + sendCompany + ", sendArea=" + sendArea + ", sendAddress=" + sendAddress
+                + ", recName=" + recName + ", recMobile=" + recMobile + ", recCompany=" + recCompany
+                + ", recArea=" + recArea + ", recAddress=" + recAddress + ", sendProNum="
+                + sendProNum + ", goodsType=" + goodsType + ", payTypeNum=" + payTypeNum
+                + ", weight=" + weight + ", remark=" + remark + ", num=" + num + ", arriveCity="
+                + arriveCity + ", feeitemnum=" + feeitemnum + ", actlweit=" + actlweit + ", vol="
+                + vol + ", floadreqr=" + floadreqr + ", wayBillType=" + wayBillType
+                + ", signStatus=" + signStatus + ", delTag=" + delTag + "]";
+    }
+    
+    
+
 }

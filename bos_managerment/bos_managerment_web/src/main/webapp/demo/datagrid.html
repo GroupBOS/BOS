@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic DataGrid - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css">
+	<!-- <link rel="stylesheet" type="text/css" href="../demo.css"> -->
+	<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+		$(function()
+		{
+			$("#dg").datagrid({
+				columns : [ [ {// 指定列
+					field : 'cb',
+					title : 'cb',
+					checkbox : true
+				}, {// 指定列
+					field : 'id',
+					title : '编号',
+					width : 100,
+					editor : {
+						type : 'numberbox',// 输入框的数据格式
+						options : {}
+					}
+				}, {
+					field : 'name',
+					title : '姓名',
+					width : 100,
+					editor : {
+						type : 'text',// 输入框的数据格式
+						options : {}
+					}
+				}, {
+					field : 'address',
+					title : '地址',
+					width : 100,
+					align : 'right',
+					editor : {
+						type : 'text',// 输入框的数据格式
+						options : {}
+					}
+				} ] ]
+
+			})
+		})
+	</script>
+	
+	<script type="text/javascript">
+		var index;
+		var toolbar = [{
+			text:'增加一行',
+			iconCls:'icon-add',
+			handler:function(){
+				$('#dg').datagrid('insertRow',{
+					index: 1,	// 索引从0开始
+					row: {
+						id: 1,
+						name: '张三',
+						address: 'sz'
+						}
+					});
+				}
+		},{
+			text:'修改',
+			iconCls:'icon-cut',
+			handler:function(){
+				var rows = $('#dg').datagrid('getSelections');
+
+				/* for(var i=0;i<rows.length;i++)
+				{
+					var index = $("#dg").datagrid("getRowIndex",rows[i])
+					alert(index)
+				} */
+				if(rows.length == 1)
+				{
+					index = $("#dg").datagrid("getRowIndex",rows[0])
+					//$("#dg").datagrid('selectRow', index).datagrid('beginEdit', index);
+					//alert(index)
+					$('#dg').datagrid('beginEdit', index)
+				}
+				else
+				{
+					alert("只能选择一行!")
+				}
+			
+			}
+		},'-',{
+			text:'保存',
+			iconCls:'icon-save',
+			handler:function(){
+				$('#dg').datagrid('endEdit', index)
+			
+			}
+		},{
+			text:'放弃',
+			iconCls:'icon-clear',
+			handler:function(){
+				$('#dg').datagrid('cancelEdit', index)
+			}
+		},{
+			text:'删除',
+			iconCls:'icon-clear',
+			handler:function(){alert('删除')}
+		}];
+	</script>
+	
+	<script type="text/javascript">
+		function onClickCell(index, field){
+		
+		}
+		
+		function onEndEdit()
+		{
+			
+		}
+		
+		function onAfterEdit(index, row, changes)
+		{
+			console.log("1:"+index)
+			//alert("2:"+row)
+			console.log("2:"+changes.id)
+			console.log("3:"+changes.name)
+			console.log("4:"+changes.address)
+		}
+	</script>
+</head>
+<body>
+	<h2>Basic DataGrid</h2>
+	<p>The DataGrid is created from markup, no JavaScript code needed.</p>
+	<div style="margin:20px 0;"></div>
+	
+	<table id="dg" class="easyui-datagrid" title="Basic DataGrid" style="width:700px;height:250px"
+			data-options="singleSelect:false,collapsible:true,url:'#',method:'get',toolbar:toolbar,
+			onAfterEdit:onAfterEdit">
+		<!-- <thead>
+			<tr>
+				<th data-options="field:'ck',checkbox:true">Item ID</th>
+				<th data-options="field:'name',width:100">Item ID</th>
+				<th data-options="field:'age',width:100">Product</th>
+				<th data-options="field:'note',width:100,align:'right'">List Price</th>
+			</tr>
+		</thead> -->
+	</table>
+
+</body>
+</html>
