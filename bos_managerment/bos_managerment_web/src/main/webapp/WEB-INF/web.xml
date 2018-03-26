@@ -29,6 +29,28 @@
 		<servlet-name>cxf</servlet-name>
 		<url-pattern>/webService/*</url-pattern>
 	</servlet-mapping>
+	
+	<!--
+		2.5的工程,filter执行的顺序是按照在web.xml中注册的顺序从上往下执行的
+		3.0的工程,filter执行的顺序是类名的字典顺序
+		listener
+		filter
+		servlet(第一次访问的时候创建)
+	-->
+	<!--
+		spring框架提供,整合shiro框架
+		本拦截器一定要卸载struts的拦截器之上
+		在DelegatingFilterProxy创建的过程中,依赖了一个对象,这个对象必须在applicationContext.xml文件中注册
+		而且注册的时候声明的id必须和DelegatingFilterProxy声明的filter-name保持一致
+	-->
+	<filter>
+		<filter-name>shiroFilterFactoryBean</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>shiroFilterFactoryBean</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
   
   
 	<!-- <filter>

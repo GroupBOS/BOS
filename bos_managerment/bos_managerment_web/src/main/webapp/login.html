@@ -22,6 +22,12 @@
 					}
 				});
 			});
+			
+			
+			function doLogin()
+			{
+				$("#loginform").submit();
+			}
 		</script>
 	</head>
 	
@@ -42,7 +48,7 @@
 			<div class="container">
 				<div class="col-md-4 col-md-offset-7 logincontent">
 					<h4>员工登录</h4>
-					<form class="form-horizontal" id="loginform" name="loginform" method="post" action="">
+					<form class="form-horizontal" id="loginform" name="loginform" method="post" action="userAction_login.action">
 						<div class="form-group" id="idInputLine">
 							<label for="inputPassword3" class="col-sm-3 control-label">账号</label>
 							<div class="col-sm-8">
@@ -52,13 +58,13 @@
 						<div class="form-group" id="pwdInputLine">
 							<label id="loginform:pwdInput" class="col-sm-3 control-label">密码</label>
 							<div class="col-sm-8">
-								<input for="pwdInput" type="password" class="form-control" id="inputaccount" placeholder="请输入您的密码">
+								<input for="pwdInput" type="password" class="form-control" name="password" id="inputaccount" placeholder="请输入您的密码">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="inputvalidate" class="col-sm-3 control-label">验证码</label>
 							<div class="col-sm-4">
-								<input type="text" class="form-control" id="inputaccount" placeholder="请输入验证码">
+								<input type="text" class="form-control" id="inputaccount" placeholder="请输入验证码" name="vcode">
 							</div>
 							<div class="col-sm-4">
 								<img id="loginform:vCode" src="validatecode.jsp"  onclick="javascript:document.getElementById('loginform:vCode'). src='validatecode.jsp?'+Math.random();" />
@@ -74,7 +80,7 @@
 							</div>
 						</div>
 						<div class="col-md-offset-3 col-md-8">
-							<a href="./index.html" id="loginform:j_id19" name="loginform:j_id19"
+							<a href="javascript:doLogin()" id="loginform:j_id19" name="loginform:j_id19"
 								 class="btn btn-danger">立即登录</a>
 							
 						</div>
