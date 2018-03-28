@@ -54,8 +54,11 @@ public class CourierAction extends BaseAction<Courier>{
 
     private static final long serialVersionUID = -5344671714414993043L;
 
-    @Autowired
+    //@Autowired
     private CourierService courierSerivce;
+    public void setCourierSerivce(CourierService courierSerivce) {
+        this.courierSerivce = courierSerivce;
+    }
     
     
     @Action(value="courier_pageQuery")

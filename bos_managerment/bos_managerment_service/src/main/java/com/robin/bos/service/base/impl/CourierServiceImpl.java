@@ -20,7 +20,7 @@ import com.robin.bos.service.base.CourierService;
  * Date:     2018年3月14日 下午10:34:53 <br/>       
  */
 
-@Component
+@Component("courierSerivce")
 @Transactional
 public class CourierServiceImpl implements CourierService {
     
