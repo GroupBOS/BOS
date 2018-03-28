@@ -82,6 +82,21 @@ public class UserAction extends BaseAction<User> {
         return SUCCESS;
     }
     
+    
+    @Action(value="userAction_logout",
+            results={@Result(name=LOGIN,type="redirect",location="/login.html")})
+    public String logout()
+    {
+        // 1.创建subject,并执行logout
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        
+        // 2.从session中移除user
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("user");
+        return LOGIN;
+    }
+    
 
 }
   
