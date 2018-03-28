@@ -1,4 +1,5 @@
 [
+		{ "id":"100", "pId":"0", "name":"系统管理"},
 		{ "id":"1001", "pId":"100", "name":"菜单管理", "page":"pages/system/menu.html"},
 		{ "id":"1002", "pId":"100", "name":"权限管理", "page":"pages/system/permission.html"},
 		{ "id":"1003", "pId":"100", "name":"角色管理", "page":"pages/system/role.html"},
