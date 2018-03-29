@@ -3,6 +3,8 @@ package com.robin.bos.service.system.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,16 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<Menu> findLevelOne() {
         return menuRepository.findByParentMenuIsNull();
+    }
+
+    @Override
+    public Menu save(Menu menu) {
+        return menuRepository.save(menu);
+    }
+
+    @Override
+    public Page<Menu> findAll(Pageable pageable) {
+        return menuRepository.findAll(pageable);
     }
 
 }

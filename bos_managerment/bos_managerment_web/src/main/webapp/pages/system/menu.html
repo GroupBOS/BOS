@@ -18,6 +18,10 @@
 		<script type="text/javascript">
 			$(function(){
 				$("#grid").datagrid({
+					url : '../../menuAction_pageQuery.action',
+					pageList: [30,50,100],
+					pagination : true,
+					fit : true,
 					toolbar : [
 						{
 							id : 'add',
@@ -28,7 +32,6 @@
 							}
 						}           
 					],
-					url : '',
 					columns : [[
 					  {
 						  field : 'id',
@@ -46,7 +49,7 @@
 						  width : 200
 					  },  
 					  {
-						  field : 'zindex',
+						  field : 'priority',
 						  title : '优先级',
 						  width : 200
 					  },  
@@ -62,9 +65,19 @@
 	</head>
 
 	<body class="easyui-layout">
+	
 		<div data-options="region:'center'">
-			<table id="grid"></table>
+			<table id="grid">
+				
+			
+			
+			</table>
+			
+			
 		</div>
 	</body>
+	
+	
+	
 
 </html>

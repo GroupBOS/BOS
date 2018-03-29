@@ -7,8 +7,12 @@ import java.util.List;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
 import com.robin.bos.domain.system.Menu;
@@ -60,6 +64,35 @@ public class MenuAction extends BaseAction<Menu> {
 
         return NONE;
     }
+    
+    @Action(value="menuAction_save",
+            results={@Result(name=SUCCESS,type="redirect",location="/pages/system/menu.html"),
+                     @Result(name=ERROR,type="redirect",location="/index.html")})
+    public String save()
+    {
+        Menu menu = menuService.save(getModel());
+        if(menu != null)
+        {
+            return SUCCESS;
+        }
+        return ERROR;
+    }
+    
+    @Action(value="menuAction_pageQuery")
+    public String pageQuery() throws IOException
+    {
+        //由于page这个属性,也是Menu里面的属性之一,模型驱动会优先封装到Menu,导致page无法被属性驱动获取,造成空指针
+        Pageable pageable = new PageRequest(Integer.parseInt(getModel().getPage())-1, rows);
+        Page<Menu> page = menuService.findAll(pageable);
+        
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"parentMenu","childrenMenus","roles"});
+        page2Json(page, jsonConfig);
+        return NONE;
+    }
+    
+    
+    
 
 }
   
