@@ -35,7 +35,7 @@
 				};
 				
 				$.ajax({
-					url : '../../data/menu.json',
+					url : '../../menuAction_findLevelOne.action',
 					type : 'POST',
 					dataType : 'text',
 					success : function(data) {
@@ -51,8 +51,30 @@
 				
 				// 点击保存
 				$('#save').click(function(){
-					location.href='role.html';
+					//location.href='role.html';
+					
+					//获取ztree选中的选项
+					var treeObj = $.fn.zTree.getZTreeObj("menuTree")
+					var checked = treeObj.getCheckedNodes(true);
+					var arrayChecked = new Array();
+					for(var i=0;i<checked.length;i++)
+					{
+						arrayChecked.push(checked[i].id)
+					}
+					$("#menuIds").val(arrayChecked.toString())
+					$("#roleForm").submit();
 				});
+				
+				
+				//动态获取permission
+				$.post("../../permissionAction_findAll.action",function(data){
+					for(var i=0;i<data.length;i++)
+					{
+						var url = "<input type='checkbox' name='permissionIds' value='"+data[i].id+"'/>"+data[i].name;
+						$("#permission_td").append(url)
+					}
+				});
+				
 			});
 		</script>
 	</head>
@@ -64,7 +86,8 @@
 			</div>
 		</div>
 		<div region="center" style="overflow:auto;padding:5px;" border="false">
-			<form id="roleForm" method="post">
+			<form id="roleForm" method="post" action="../../roleAction_save.action">
+				<input type="hidden" id="menuIds" name="menuIds" />
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">角色信息</td>
@@ -89,10 +112,11 @@
 					</tr>
 					<tr>
 						<td>权限选择</td>
-						<td>
-							<input type="checkbox" name="permissionIds" value="1" /> 添加快递员 
+						<td id="permission_td">
+							<!-- <input type="checkbox" name="permissionIds" value="1" /> 添加快递员 
 							<input type="checkbox" name="permissionIds" value="2" /> 快递员列表查询
-							<input type="checkbox" name="permissionIds" value="3" /> 添加区域 
+							<input type="checkbox" name="permissionIds" value="3" /> 添加区域  -->
+							<!--通过ajax动态获取  -->
 						</td>
 					</tr>
 					<tr>

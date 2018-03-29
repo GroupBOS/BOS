@@ -20,5 +20,7 @@ public interface MenuService {
 
     Page<Menu> findAll(Pageable pageable);
 
+    Menu findOne(Long id);
+
 }
   

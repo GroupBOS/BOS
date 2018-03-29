@@ -1,6 +1,7 @@
 package com.robin.bos.web.action.system;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -59,6 +60,18 @@ public class PermissionAction extends BaseAction<Permission> {
             return SUCCESS;
         }
         return ERROR;
+    }
+    
+    
+    @Action(value="permissionAction_findAll")
+    public String findAll() throws IOException
+    {
+        List<Permission> list = permissionService.findAll();
+        
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"roles"});
+        list2Json(list, jsonConfig);
+        return NONE;
     }
 
 }

@@ -21,6 +21,10 @@
 			$(function(){
 				// 数据表格属性
 				$("#grid").datagrid({
+					url : '../../roleAction_pageQuery.action',
+					pageList: [30,50,100],
+					pagination : true,
+					fit : true,
 					toolbar : [
 						{
 							id : 'add',
@@ -31,7 +35,6 @@
 							}
 						}           
 					],
-					url : '',
 					columns : [[
 						{
 							field : 'id',
