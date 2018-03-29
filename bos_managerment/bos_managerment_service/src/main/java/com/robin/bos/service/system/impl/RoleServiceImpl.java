@@ -1,5 +1,7 @@
 package com.robin.bos.service.system.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +31,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role save(Role role) {
         return roleRepository.save(role);
+    }
+
+    @Override
+    public List<Role> findAll() {
+        return roleRepository.findAll();
     }
 
 }

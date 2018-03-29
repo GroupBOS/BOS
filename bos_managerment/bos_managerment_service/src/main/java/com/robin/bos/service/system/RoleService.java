@@ -1,5 +1,7 @@
 package com.robin.bos.service.system;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +17,8 @@ public interface RoleService {
     Page<Role> findAll(Pageable pageable);
 
     Role save(Role role);
+
+    List<Role> findAll();
 
 }
   

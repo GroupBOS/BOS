@@ -2,6 +2,7 @@ package com.robin.bos.web.action.system;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -106,6 +107,17 @@ public class RoleAction extends BaseAction<Role> {
             return SUCCESS;
         }
         return ERROR;
+    }
+    
+    @Action(value="roleAction_findAll")
+    public String findAll() throws IOException
+    {
+        List<Role> list = roleService.findAll();
+        
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"users","permissions","menus"});
+        list2Json(list, jsonConfig);
+        return NONE;
     }
     
     

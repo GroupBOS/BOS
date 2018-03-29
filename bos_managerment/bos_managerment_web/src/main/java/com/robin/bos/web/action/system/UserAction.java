@@ -1,5 +1,9 @@
 package com.robin.bos.web.action.system;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,11 +18,21 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
+import com.robin.bos.domain.system.Menu;
+import com.robin.bos.domain.system.Permission;
+import com.robin.bos.domain.system.Role;
 import com.robin.bos.domain.system.User;
+import com.robin.bos.service.system.UserService;
 import com.robin.bos.web.action.BaseAction;
+
+import net.sf.json.JsonConfig;
 
 /**  
  * ClassName:UserAction <br/>  
@@ -37,6 +51,15 @@ public class UserAction extends BaseAction<User> {
     public void setVcode(String vcode) {
         this.vcode = vcode;
     }
+    
+    private Long[] roleIds;
+    public void setRoleIds(Long[] roleIds) {
+        this.roleIds = roleIds;
+    }
+    
+    
+    @Autowired
+    private UserService userService;
     
     
     @Action(value="userAction_login",
@@ -95,6 +118,31 @@ public class UserAction extends BaseAction<User> {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("user");
         return LOGIN;
+    }
+    
+    @Action(value="userAction_pageQuery")
+    public String pageQuery() throws IOException
+    {
+        Pageable pageable = new PageRequest(page-1, rows);
+        Page<User> page = userService.findAll(pageable);
+        
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"roles"});
+        page2Json(page, jsonConfig);
+        return NONE;
+    }
+    
+    @Action(value="userAction_save",
+            results={@Result(name=SUCCESS,type="redirect",location="/pages/system/userlist.html"),
+                     @Result(name=ERROR,type="redirect",location="/index.html")})
+    public String save()
+    {
+        User user = userService.save(getModel(),roleIds);
+        if(user != null)
+        {
+            return SUCCESS;
+        }
+        return ERROR;
     }
     
 
