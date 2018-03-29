@@ -18,6 +18,10 @@
 		<script type="text/javascript">
 			$(function(){
 				$("#grid").datagrid({
+					url : '../../permissionAction_pageQuery.action',
+					pageList: [30,50,100],
+					pagination : true,
+					fit : true,
 					toolbar : [
 						{
 							id : 'add',
@@ -28,7 +32,6 @@
 							}
 						}           
 					],
-					url : '',
 					columns : [[
 					  {
 						  field : 'id',
