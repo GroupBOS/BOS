@@ -74,7 +74,8 @@
 				
 				
 				// 基本功能菜单加载
-				$.post("./data/menu.json",function(data){
+				//$.post("./data/menu.json",function(data){
+				$.post("menuAction_findbyUser.action",function(data){
 					$.fn.zTree.init($("#treeMenu"), setting, data);
 				},"json");
 				

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.robin.bos.dao.system.MenuRepository;
 import com.robin.bos.domain.system.Menu;
+import com.robin.bos.domain.system.User;
 import com.robin.bos.service.system.MenuService;
 
 /**  
@@ -42,6 +43,22 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Menu findOne(Long id) {
         return menuRepository.findOne(id);
+    }
+
+    @Override
+    public List<Menu> findbyUser(User user) {
+       
+        if(user == null){
+            System.out.println("未登录!");
+            return null;
+        }
+        //1.如果用户是admin,则直接展示所有菜单
+        if(user.getUsername().equals("admin")){
+            return menuRepository.findAll();
+        }
+        else{
+            return menuRepository.findbyUser(user.getId());
+        }
     }
 
 }

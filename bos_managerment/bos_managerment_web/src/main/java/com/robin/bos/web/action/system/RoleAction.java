@@ -84,18 +84,25 @@ public class RoleAction extends BaseAction<Role> {
         
         Role role = getModel();
         String[] menus = StringUtils.split(menuIds, ",");
-        for (String menuId : menus) {
-            Menu menu = menuService.findOne(Long.parseLong(menuId));
-            System.out.println("menuId:"+menuId);
-            menuSet.add(menu);
+        if(menus != null)
+        {
+            for (String menuId : menus) {
+                Menu menu = menuService.findOne(Long.parseLong(menuId));
+                System.out.println("menuId:"+menuId);
+                menuSet.add(menu);
+            }
         }
+        
         
         //struts获取数组格式分隔符是", ",注意后面带个空格
         String[] permissions = StringUtils.split(permissionIds, ", ");
-        for (String permissionId : permissions) {
-            Permission permission = permissionService.findOne(Long.parseLong(permissionId));
-            System.out.println("permissionId:"+permissionId);
-            permissionSet.add(permission);
+        if(permissions != null)
+        {
+            for (String permissionId : permissions) {
+                Permission permission = permissionService.findOne(Long.parseLong(permissionId));
+                System.out.println("permissionId:"+permissionId);
+                permissionSet.add(permission);
+            }
         }
         
         role.setMenus(menuSet);

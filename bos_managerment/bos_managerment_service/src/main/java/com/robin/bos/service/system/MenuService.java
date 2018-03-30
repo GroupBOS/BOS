@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.robin.bos.domain.system.Menu;
+import com.robin.bos.domain.system.User;
 
 /**  
  * ClassName:MenuService <br/>  
@@ -21,6 +22,8 @@ public interface MenuService {
     Page<Menu> findAll(Pageable pageable);
 
     Menu findOne(Long id);
+
+    List<Menu> findbyUser(User user);
 
 }
   

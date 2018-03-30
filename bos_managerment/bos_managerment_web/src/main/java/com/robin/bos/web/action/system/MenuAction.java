@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
 import com.robin.bos.domain.system.Menu;
+import com.robin.bos.domain.system.User;
 import com.robin.bos.service.system.MenuService;
 import com.robin.bos.web.action.BaseAction;
 
@@ -88,6 +91,19 @@ public class MenuAction extends BaseAction<Menu> {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"parentMenu","childrenMenus","roles"});
         page2Json(page, jsonConfig);
+        return NONE;
+    }
+    
+    @Action(value="menuAction_findbyUser")
+    public String findbyUser() throws IOException
+    {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        List<Menu> list = menuService.findbyUser(user);
+        
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"parentMenu","childrenMenus","roles","children"});
+        list2Json(list, jsonConfig);
         return NONE;
     }
     
