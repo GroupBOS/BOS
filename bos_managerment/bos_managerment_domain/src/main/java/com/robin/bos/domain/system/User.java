@@ -1,5 +1,6 @@
 package com.robin.bos.domain.system;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +19,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "T_USER")
-public class User {
+public class User implements Serializable {
 
+    private static final long serialVersionUID = 2550077500853935326L;
     @Id
     @GeneratedValue
     @Column(name = "C_ID")
