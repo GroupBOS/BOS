@@ -19,6 +19,8 @@ public interface AreaService {
 
     public List<Area> findByQ(String q);
 
+    public List<Area> findAll();
+
 
 }
   

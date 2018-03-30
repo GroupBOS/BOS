@@ -45,6 +45,11 @@ public class AreaServiceImpl implements AreaService {
         return areaRepository.findByQ(q);
     }
 
+    @Override
+    public List<Area> findAll() {
+        return areaRepository.findAll();
+    }
+
 
 
 }

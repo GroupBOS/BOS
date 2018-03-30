@@ -32,6 +32,12 @@
 			 function doImport(){
 				alert("导入...");
 				//upLoad.submit();
+			}
+			 
+			 function doExport(){
+				alert("导出...");
+				//upLoad.submit();
+				window.location="../../areaAction_exportExcel.action"
 			} 
 			
 			//工具栏
@@ -55,6 +61,11 @@
 				text : '导入',
 				iconCls : 'icon-redo',
 				handler : doImport
+			}, {
+				id : 'button-export',
+				text : '导出',
+				iconCls : 'icon-redo',
+				handler : doExport
 			}];
 			// 定义列
 			var columns = [ [ {
