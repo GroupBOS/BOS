@@ -1,5 +1,7 @@
 package com.robin.bos.service.base;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +17,8 @@ public interface SubAreaService {
     SubArea save(SubArea model);
 
     Page<SubArea> findAll(Pageable pageable);
+
+    List<SubArea> findSubByfixed(Long id);
 
 }
   
