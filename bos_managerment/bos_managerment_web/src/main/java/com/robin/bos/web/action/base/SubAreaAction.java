@@ -1,7 +1,9 @@
 package com.robin.bos.web.action.base;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -17,6 +19,7 @@ import com.robin.bos.domain.base.SubArea;
 import com.robin.bos.service.base.SubAreaService;
 import com.robin.bos.web.action.BaseAction;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 
 /**  
@@ -59,6 +62,23 @@ public class SubAreaAction extends BaseAction<SubArea> {
         page2Json(page, jsonConfig);
 
         return NONE;
+    }
+    @Action("SubareaAction_findSubByfixed")
+    public String findSubByfixed(){
+        List<SubArea>list =subAreaService.findSubByfixed(getModel().getId());
+        JsonConfig config = new JsonConfig();
+        config.setExcludes(new String[]{"subareas","fixedArea"});
+        String string = JSONArray.fromObject(list,config).toString();
+        ServletActionContext.getResponse().setContentType("application/json;charset=UTF-8");
+        try {
+            ServletActionContext.getResponse().getWriter().write(string);
+        } catch (IOException e) {
+              
+            
+            e.printStackTrace();  
+            
+        }
+        return null;
     }
 }
   
