@@ -54,11 +54,13 @@ public class SubAreaAction extends BaseAction<SubArea> {
         Pageable pageable = new PageRequest(page-1, rows);
 
         Page<SubArea> page = subAreaService.findAll(pageable);
-
+    
+        
         JsonConfig jsonConfig = new JsonConfig();
-        //jsonConfig.setExcludes(new String[]{"fixedArea","area"});
+       
+        
         jsonConfig.setExcludes(new String[]{"subareas","fixedArea"});
-
+       
         page2Json(page, jsonConfig);
 
         return NONE;

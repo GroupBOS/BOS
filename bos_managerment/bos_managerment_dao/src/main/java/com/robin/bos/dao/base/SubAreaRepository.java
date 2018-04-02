@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.robin.bos.domain.base.Area;
 import com.robin.bos.domain.base.FixedArea;
 import com.robin.bos.domain.base.SubArea;
 
@@ -35,6 +36,13 @@ public interface SubAreaRepository extends JpaRepository<SubArea, Long>,JpaSpeci
     SubArea findByKeyWords(String keyWord);
      @Query("from SubArea where fixedArea = ?")
     List<SubArea> findSubByfixed(FixedArea fixedArea);
+     @Modifying
+    @Query("update SubArea set startNum=?,endNum=?,single=?,keyWords=?,assistKeyWords=?,area=? where id=?")
+    void updateById(String startNum, String endNum, Character single, String keyWords,
+            String assistKeyWords, Area area, Long id);
+
+    
+   
 
     
 

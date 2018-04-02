@@ -8,8 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.robin.bos.dao.base.AreaRepository;
 import com.robin.bos.dao.base.FixedAreaRepository;
 import com.robin.bos.dao.base.SubAreaRepository;
+import com.robin.bos.domain.base.Area;
 import com.robin.bos.domain.base.FixedArea;
 import com.robin.bos.domain.base.SubArea;
 import com.robin.bos.service.base.SubAreaService;
@@ -25,12 +27,21 @@ public class SubAreaServiceImpl implements SubAreaService {
 
     @Autowired
     private SubAreaRepository subAreaRepository;
-    
+    @Autowired
+    private AreaRepository areaRepository;
     @Autowired
     private FixedAreaRepository fixedAreaRepository;
     @Override
     public SubArea save(SubArea model) {
-        return subAreaRepository.save(model);
+        SubArea subArea=null;
+        if(model.getId()==null){//保存
+            subArea =subAreaRepository.save(model);
+        }else{//更新
+            Area area = areaRepository.findOne(model.getArea().getId());
+            subAreaRepository.updateById(model.getStartNum(),model.getEndNum(),model.getSingle(),model.getKeyWords(),model.getAssistKeyWords(),area,model.getId());
+            subArea=new SubArea();
+        }
+        return  subArea;
     }
 
 
