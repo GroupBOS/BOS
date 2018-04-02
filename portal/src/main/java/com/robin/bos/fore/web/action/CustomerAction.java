@@ -122,7 +122,20 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
             
             String subject = "激活邮件";
             //5.发送邮件
-            MailUtils.sendMail(getModel().getEmail(),subject, emailBody);
+            //MailUtils.sendMail(getModel().getEmail(),subject, emailBody);
+            
+               jmsTemplate.send("mail", new MessageCreator() {
+				
+				@Override
+				public Message createMessage(Session session) throws JMSException {
+					MapMessage message=session.createMapMessage();
+					message.setString("mail", model.getEmail());
+					message.setString("title", "激活邮件");
+					message.setString("emailBody", emailBody);
+					return message;
+				}
+			});
+			
             
             return SUCCESS;
         }

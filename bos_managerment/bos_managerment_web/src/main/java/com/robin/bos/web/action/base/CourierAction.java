@@ -201,6 +201,13 @@ public class CourierAction extends BaseAction<Courier>{
     }
     
     
+  //还原快递员
+  	@Action(value="courierAction_rest" ,results = {
+  			@Result(name = "success", location = "/pages/base/courier.html", type = "redirect") })
+  	public String rest() {
+        courierSerivce.rest(ids);
+  		return SUCCESS;
+  	}
     @Action("CourierAction_findCourierByfixedArea")
     public String findCourierByfixedArea(){
         List<Courier>list=courierSerivce.findCourierByfixedArea(getModel().getId());
@@ -216,7 +223,6 @@ public class CourierAction extends BaseAction<Courier>{
         }
         return null;
     }
-    
     
 
 }

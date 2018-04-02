@@ -28,5 +28,8 @@ public interface CourierService {
     public List<Courier> findAvalible();
 
 	public List<Courier> findCourierByfixedArea(Long id);
+    
+    //还原
+    void rest(String ids);
 }
   
