@@ -36,7 +36,7 @@ public interface SubAreaRepository extends JpaRepository<SubArea, Long>,JpaSpeci
      @Query("from SubArea where fixedArea = ?")
     List<SubArea> findSubByfixed(FixedArea fixedArea);
 
-    
-
+    @Query("select a.province,count(*) from SubArea s inner join s.area a group by a.province")
+    List<Object[]> subAreaChart();
 }
   
