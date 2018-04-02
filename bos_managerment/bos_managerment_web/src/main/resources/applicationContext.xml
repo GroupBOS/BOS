@@ -172,6 +172,8 @@
 				/userAction_login.action = anon
 				/courier_pageQuery.action = perms["courierAction_pageQuery"]
 				/hi.html = perms["courierAction_pageQuery"]
+				/webService/** = anon
+				/upload/* = anon
 				/** = authc
 			</value>
 		</property>
@@ -209,6 +211,7 @@
 			<!-- 指定具体的触发器,可以简单理解为具体的一个闹钟 -->
 			<list>
 				<ref bean="workBillEmailTrigger" />
+				<ref bean="promotionTrigger" />
 			</list>
 
 		</property>
@@ -236,9 +239,45 @@
 		<!-- 注入目标方法 -->
 		<property name="targetMethod" value="sendMail"></property>
 	</bean>
-
+	
 	<!-- 注册目标对象 -->
 	<bean id="workBillEmailJob" class="com.robin.bos.service.jobs.WorkbillJob"></bean>
-
+	
+	
+	
+	<!-- 定时检查宣传任务 -->
+	<!-- 注册任务详情,通过反射的方式调用目标类的目标方法 -->
+	<bean id="jobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 注入目标对象 -->
+		<property name="targetObject" ref="promotionJob"></property>
+		<!-- 注入目标方法 -->
+		<property name="targetMethod" value="checkPromotion"></property>
+	</bean>
+	<!-- 注册触发器,可以理解为这是一个闹钟 -->
+	<bean id="promotionTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<!-- 指定触发的规则.闹钟在什么时候响起 -->
+		<property name="cronExpression">
+			
+			<value>0/15/30/45 * 14 * * ?</value>
+		</property>
+		<!-- 注入任务详情,闹钟响起的时候要做什么事情 -->
+		<property name="jobDetail" ref="jobDetail"></property>
+	</bean>
+	
+	
+	<!--发布促销任务的WebService -->
+	<jaxrs:server address="/promotionService">
+		<jaxrs:serviceBeans>
+			<ref bean="promotionServiceImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+		</jaxrs:outInterceptors>
+	</jaxrs:server>
 
 </beans>
