@@ -20,25 +20,88 @@
 				$('#addWindow').window("open");
 			}
 			
-			function doEdit(){
-				alert("修改...");
+			//快递员修改
+              function doEdit() {
+				
+				var rows=	$("#grid").datagrid("getSelections")
+				 if (rows.length==1) {
+						//弹出修改框
+						 $("#addWindow").window("open")
+						 $("#courierForm").form("load", rows[0])
+
+					}else {
+						 $.messager.alert('消息', '请选择一行数据进行修改', 'info')
+					}
 			}
 			
 			function doDelete(){
-				alert("删除...");
+				var rows= $("#grid").datagrid("getSelections")
+				if (rows.length == 0) {
+					$.messager.alrt("提示","请至少选择一条数据进行操作","info")
+				}else {
+					
 				
-				var result = $("#grid").datagrid("getSelections");
-				var array = new Array()
-				
-				for(var i=0;i<result.length;i++)
-				{
-					array.push(result[i].id)
+					for (var i = 0; i < rows.length; i++) {
+						if (rows[i].deltag == "1") {
+							$.messager.alert("提示","不能二次作废快递员","info");
+							return;
+						}
+					}
+						
+					
+					
+					$.messager.confirm('消息', '确定要作废快递员吗?', function(r){
+						
+						//创建一个数组
+						var arr=new Array();
+						for (var i = 0; i < rows.length; i++) {
+							//像数组中插入数据
+							arr.push(rows[i].id)
+						}
+						if (r){
+							// 如何向后台发送请求
+							//form表单,太麻烦,ajax 没有返回页面,,window.location.href
+							window.location.href="../../courier_batchDel.action?ids="+arr.toString()
+						}
+					});
 				}
-				window.location.href = "../../courier_batchDel.action?ids="+array.toString()
+				
+				
+				
+						
 			}
 			
+			//快递员还原
 			function doRestore(){
-				alert("将取派员还原...");
+				var rows= $("#grid").datagrid("getSelections")
+				if (rows.length == 0) {
+					$.messager.alert("提示","请至少选择一条数据进行操作","info")
+				}else {
+					
+
+					for (var i = 0; i < rows.length; i++) {
+						if (rows[i].deltag == "") {
+							$.messager.alert("提示","不能二次还原快递员","info");
+							return;
+						}
+					}
+					
+					
+					$.messager.confirm('消息', '确定要还原快递员吗?', function(r){
+						
+						//创建一个数组
+						var arr=new Array();
+						for (var i = 0; i < rows.length; i++) {
+							//像数组中插入数据
+							arr.push(rows[i].id)
+						}
+						if (r){
+							// 如何向后台发送请求
+							//form表单,太麻烦,ajax 没有返回页面,,window.location.href
+							window.location.href="../../courierAction_rest.action?ids="+arr.toString()
+						}
+					});
+				}
 			}
 			
 			

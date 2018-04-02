@@ -26,5 +26,8 @@ public interface CourierService {
     public Page<Courier> findAll(Specification<Courier> specification, Pageable pageable);
 
     public List<Courier> findAvalible();
+    
+    //还原
+    void rest(String ids);
 }
   

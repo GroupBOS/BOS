@@ -200,7 +200,13 @@ public class CourierAction extends BaseAction<Courier>{
     }
     
     
-    
+  //还原快递员
+  	@Action(value="courierAction_rest" ,results = {
+  			@Result(name = "success", location = "/pages/base/courier.html", type = "redirect") })
+  	public String rest() {
+  		courierService.rest(ids);
+  		return SUCCESS;
+  	}
     
 
 }

@@ -23,5 +23,9 @@ public interface CourierRepository extends JpaRepository<Courier, Long>,JpaSpeci
     @Query("from Courier where nvl(deltag,0) <> 1")
     List<Courier> findAvalible();
 
+    //还原
+    @Modifying
+	@Query("update Courier set deltag = null where id=?")
+	void updateDelTagByIds(long id);
 }
   

@@ -60,5 +60,6 @@
 		container-type="default" connection-factory="connectionFactory"
 		acknowledge="auto">
 		<jms:listener destination="sms" ref="SMSConsumer" />
+		<jms:listener destination="mail" ref="mailConsumer" />
 	</jms:listener-container>	
 </beans>
