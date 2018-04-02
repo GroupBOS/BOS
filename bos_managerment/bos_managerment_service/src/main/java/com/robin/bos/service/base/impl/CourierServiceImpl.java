@@ -59,5 +59,11 @@ public class CourierServiceImpl implements CourierService {
         return courierRepository.findAvalible();
     }
 
+	@Override
+	public List<Courier> findCourierByfixedArea(Long id) {
+		// TODO Auto-generated method stub
+		return courierRepository.findCourierByfixedArea(id);
+	}
+
 }
   

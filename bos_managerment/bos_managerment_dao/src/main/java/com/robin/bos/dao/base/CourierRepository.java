@@ -22,6 +22,10 @@ public interface CourierRepository extends JpaRepository<Courier, Long>,JpaSpeci
     
     @Query("from Courier where nvl(deltag,0) <> 1")
     List<Courier> findAvalible();
+    
+    
+    @Query("select c from Courier c inner join c.fixedAreas f where f.id=?")
+	List<Courier> findCourierByfixedArea(Long id);
 
 }
   

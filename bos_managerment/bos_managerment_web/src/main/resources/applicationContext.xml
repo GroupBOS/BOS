@@ -160,7 +160,7 @@
 				拦截的规则执行的时候是从上往下执行的,一旦有一个规则匹配成功,后面的规则就不再执行了
 				拦截的规则不可以折行
 				/*:是/下面的所有文件(不包括文件夹里面)
-				/**:是/下面的所有文件(包括文件夹里面)
+				/**:是/下面 的所有文件(包括文件夹里面)
 			-->
 			<value>
 
@@ -170,14 +170,14 @@
 				/js/** = anon
 				/validatecode.jsp = anon
 				/userAction_login.action = anon
-				/courier_pageQuery.action = perms["courierAction_pageQuery"]
+				<!-- /courier_pageQuery.action = perms["courierAction_pageQuery"] -->
 				/hi.html = perms["courierAction_pageQuery"]
 				/** = authc
 			</value>
 		</property>
 	</bean>
 
-	<!-- 注册安全管理器 -->
+	<!-- 注册安全管理 器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<!-- 注入realm -->
 		<property name="realm" ref="userRealm"></property>
@@ -222,7 +222,7 @@
 			<!-- 每隔五秒钟执行一次 
 			<value>0/5 * * * * ?</value> -->
 			<!-- 0s的时候启动 -->
-			<value>0 * * * * ? </value>
+			<value>0 * * * * ? 2099 </value>
 		</property>
 		<!-- 注入任务详情,闹钟响起的时候要做什么事情 -->
 		<property name="jobDetail" ref="workBillEmailJobDetail"></property>

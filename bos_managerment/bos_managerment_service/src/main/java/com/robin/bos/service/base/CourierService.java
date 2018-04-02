@@ -26,5 +26,7 @@ public interface CourierService {
     public Page<Courier> findAll(Specification<Courier> specification, Pageable pageable);
 
     public List<Courier> findAvalible();
+
+	public List<Courier> findCourierByfixedArea(Long id);
 }
   

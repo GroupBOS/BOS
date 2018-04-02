@@ -33,7 +33,7 @@
 			<property name="password" value="${password}"></property>
 	</bean>
 	
-	<!-- spring整合JPA -->
+	<!-- spring整合 JPA -->
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
