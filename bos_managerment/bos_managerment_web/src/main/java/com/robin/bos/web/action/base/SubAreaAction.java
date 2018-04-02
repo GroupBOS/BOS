@@ -52,8 +52,10 @@ public class SubAreaAction extends BaseAction<SubArea> {
        SubArea subArea = subAreaService.save(getModel());
        if(subArea != null)
        {
+          
            return SUCCESS;
        }
+       
        return ERROR;
     }
     
