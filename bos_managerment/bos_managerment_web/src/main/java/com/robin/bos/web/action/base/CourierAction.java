@@ -206,7 +206,7 @@ public class CourierAction extends BaseAction<Courier>{
         List<Courier>list=courierSerivce.findCourierByfixedArea(getModel().getId());
         
         JsonConfig config= new JsonConfig();//排除列表
-        config.setExcludes(new String[]{"takeTime"});
+        config.setExcludes(new String[]{"takeTime","fixedAreas"});
         String string = JSONArray.fromObject(list,config).toString();//转json
         ServletActionContext.getResponse().setContentType("application/json;charset=UTF-8");
         try {

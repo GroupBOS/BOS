@@ -383,7 +383,14 @@
 						field : 'deltag',
 						title : '是否作废',
 						width : 120,
-						align : 'center'
+						align : 'center',
+						formatter : function(data,row, index){
+							if(data=="1"){
+								return "已作废"
+							}else{
+								return "正常使用";
+							}
+						}
 					}, {
 						field : 'type',
 						title : '快递员类型',
@@ -393,7 +400,13 @@
 						field : 'standard',
 						title : '取件标准',
 						width : 120,
-						align : 'center'
+						align : 'center',
+						formatter : function(data,row ,index){
+							if(row.standard!=null){
+								return row.standard.name;
+							}
+							return "";
+						}
 					}, {
 						field : 'vehicleType',
 						title : '车型',
