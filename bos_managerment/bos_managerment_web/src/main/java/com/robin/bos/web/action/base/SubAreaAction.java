@@ -3,6 +3,13 @@ package com.robin.bos.web.action.base;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -18,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import com.robin.bos.domain.base.SubArea;
 import com.robin.bos.service.base.SubAreaService;
 import com.robin.bos.web.action.BaseAction;
+import com.robin.utils.FileDownloadUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
@@ -79,6 +87,71 @@ public class SubAreaAction extends BaseAction<SubArea> {
             
         }
         return null;
+    }
+    
+    
+    
+    @Action(value="SubareaAction_exportExcel",results={
+            @Result(name=SUCCESS,type="redirect",location="/pages/base/sub_area.html")})
+    public String exportExcel() throws IOException{
+    	Page<SubArea> page = subAreaService.findAll(null);
+
+    	List<SubArea> list = page.getContent();
+
+    	HSSFWorkbook workbook = new HSSFWorkbook();
+
+    	HSSFSheet sheet = workbook.createSheet();
+    	
+    	HSSFRow titleRow = sheet.createRow(0);
+    	titleRow.createCell(0).setCellValue("分拣编号");
+    	titleRow.createCell(1).setCellValue("省");
+    	titleRow.createCell(2).setCellValue("市");
+    	titleRow.createCell(3).setCellValue("区");
+    	titleRow.createCell(4).setCellValue("关键字");
+    	titleRow.createCell(5).setCellValue("起始号");
+    	titleRow.createCell(6).setCellValue("终止号");
+    	titleRow.createCell(7).setCellValue("单双号");
+    	titleRow.createCell(8).setCellValue("辅助关键字");
+    	
+    	for(int i=0;i<list.size();i++)
+    	{
+    		HSSFRow dataRow = sheet.createRow(i+1);
+    		dataRow.createCell(0).setCellValue(list.get(i).getId());
+    		dataRow.createCell(1).setCellValue(list.get(i).getArea().getProvince());
+    		dataRow.createCell(2).setCellValue(list.get(i).getArea().getCity());
+    		dataRow.createCell(3).setCellValue(list.get(i).getArea().getDistrict());
+    		dataRow.createCell(4).setCellValue(list.get(i).getKeyWords());
+    		dataRow.createCell(5).setCellValue(list.get(i).getStartNum());
+    		dataRow.createCell(6).setCellValue(list.get(i).getEndNum());
+    		dataRow.createCell(7).setCellValue(list.get(i).getSingle());
+    		dataRow.createCell(8).setCellValue(list.get(i).getAssistKeyWords());
+    	}
+    	
+    	 String filename = "分区数据统计.xls";
+         
+         //文件下载功能,设置两头一流
+         //一流:输出流
+         ServletOutputStream outputStream = ServletActionContext.getResponse().getOutputStream();
+         
+         String mimeType = ServletActionContext.getServletContext().getMimeType(filename);
+
+         String userAgent = ServletActionContext.getRequest().getHeader("User-Agent");
+
+         filename = FileDownloadUtils.encodeDownloadFilename(filename, userAgent);
+         
+         HttpServletResponse response = ServletActionContext.getResponse();
+         //两头:
+         //Content-Disposition: attachment; filename= 'filename'
+         //setContentType: mimeType
+         response.setContentType(mimeType);
+         response.setHeader("Content-Disposition",
+                 "attachment; filename=" + filename);
+
+         workbook.write(outputStream);
+         workbook.close();
+    	
+    	
+        return NONE;
     }
 }
   
