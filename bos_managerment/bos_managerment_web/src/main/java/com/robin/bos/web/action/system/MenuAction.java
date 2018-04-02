@@ -107,7 +107,21 @@ public class MenuAction extends BaseAction<Menu> {
         return NONE;
     }
     
-    
+    //添加树与修改树需要的 查询树的所有
+    @Action("menuAction_findAllForZtree")
+    public String findAllForZtree() throws IOException{
+        
+        Page<Menu> page = menuService.findAll(null);
+        List<Menu> list = page.getContent();
+        
+        JsonConfig config = new JsonConfig();
+        config.setExcludes(new String[]{"roles","childrenMenus","parentMenu","children"});
+        
+        list2Json(list, config);
+        
+        
+        return NONE;
+    }
     
 
 }
