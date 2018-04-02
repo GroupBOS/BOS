@@ -8,6 +8,8 @@ import javax.jms.MessageListener;
 import com.robin.utils.MailUtils;
 import org.springframework.stereotype.Component;
 
+import com.robin.utils.MailUtils;
+
 @Component
 public class MailConsumer implements MessageListener{
 
