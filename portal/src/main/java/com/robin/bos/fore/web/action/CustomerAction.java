@@ -118,7 +118,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
                     "http://localhost:8020/portal/customerAction_active.action?activeCode="
                     +activeCode
                     +"&telephone="+getModel().getTelephone();
-            String emailBody = "感谢您注册本网站的帐号，请在24小时之内点击<a href='"+activeURL+"'>激活链接</a>来激活账号";
+            final String emailBody = "感谢您注册本网站的帐号，请在24小时之内点击<a href='"+activeURL+"'>激活链接</a>来激活账号";
             
             String subject = "激活邮件";
             //5.发送邮件
