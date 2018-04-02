@@ -48,5 +48,11 @@ public class SubAreaServiceImpl implements SubAreaService {
         return subAreaRepository.findSubByfixed(fixedArea);
     }
 
+    @Override
+    public List<Object[]> subAreaChart() {
+
+        return subAreaRepository.subAreaChart();
+    }
+
 }
   

@@ -88,6 +88,13 @@ public class SubAreaAction extends BaseAction<SubArea> {
         }
         return null;
     }
+
+    @Action(value = "subAreaAction_subAreaChart")
+    public String subAreaChart() throws IOException {
+        List<Object[]> list = subAreaService.subAreaChart();
+        list2Json(list, null);
+        return NONE;
+    }
     
     
     

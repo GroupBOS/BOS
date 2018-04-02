@@ -3,6 +3,9 @@ package com.robin.bos.dao.base;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.robin.bos.domain.base.FixedArea;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**  
  * ClassName:FixedAreaRepository <br/>  

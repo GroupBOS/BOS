@@ -2,3 +2,14 @@
 .settings
 .classpath
 target
+.idea/
+bos_managerment/bos_managerment.iml
+bos_managerment/bos_managerment_dao/bos_managerment_dao.iml
+bos_managerment/bos_managerment_domain/bos_managerment_domain.iml
+bos_managerment/bos_managerment_service/bos_managerment_service.iml
+bos_managerment/bos_managerment_web/bos_managerment_web.iml
+common_parent/common_parent.iml
+crm/crm.iml
+middleware/middleware.iml
+portal/portal.iml
+robinUtils/robinUtils.iml
