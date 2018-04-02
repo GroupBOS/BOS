@@ -44,7 +44,7 @@ public interface SubAreaRepository extends JpaRepository<SubArea, Long>,JpaSpeci
     
    
 
-    
-
+    @Query("select a.province,count(*) from SubArea s inner join s.area a group by a.province")
+    List<Object[]> subAreaChart();
 }
   

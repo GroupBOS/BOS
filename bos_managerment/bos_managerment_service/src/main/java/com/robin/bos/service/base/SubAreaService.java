@@ -20,5 +20,6 @@ public interface SubAreaService {
 
     List<SubArea> findSubByfixed(Long id);
 
+    List<Object[]> subAreaChart();
 }
   

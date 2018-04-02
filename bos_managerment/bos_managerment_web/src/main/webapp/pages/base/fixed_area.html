@@ -325,14 +325,14 @@
 					border : true,
 					rownumbers : true,
 					striped : true,
-					url : "../../data/association_customer.json",
+					url : "../../fixedAreaAction_findAssociatedCustomers.action?id="+tid,
 					columns : [[{
 						field : 'id',
 						title : '客户编号',
 						width : 120,
 						align : 'center'
 					},{
-						field : 'name',
+						field : 'username',
 						title : '客户名称',
 						width : 120,
 						align : 'center'
@@ -343,7 +343,82 @@
 						align : 'center'
 					}]]
 				});
-				
+				$('#association_courier').datagrid( {
+					fit : true,
+					border : true,
+					rownumbers : true,
+					striped : true,
+					url : "../../CourierAction_findCourierByfixedArea.action?id="+tid,
+					columns : [[{
+						field : 'courierNum',
+						title : '快递员工号',
+						width : 120,
+						align : 'center'
+					},{
+						field : 'name',
+						title : '姓名',
+						width : 120,
+						align : 'center'
+					}, {
+						field : 'telephone',
+						title : '联系电话',
+						width : 120,
+						align : 'center'
+					}, {
+						field : 'company',
+						title : '所属单位',
+						width : 120,
+						align : 'center'
+					}, {
+						field : 'pda',
+						title : 'PDA设备号',
+						width : 120,
+						align : 'center'
+					}, {
+						field : 'checkPwd',
+						title : '查台密码',
+						width : 120,
+						align : 'center'
+					}, {
+						field : 'deltag',
+						title : '是否作废',
+						width : 120,
+						align : 'center',
+						formatter : function(data,row, index){
+							if(data=="1"){
+								return "已作废"
+							}else{
+								return "正常使用";
+							}
+						}
+					}, {
+						field : 'type',
+						title : '快递员类型',
+						width : 120,
+						align : 'center'
+					}, {
+						field : 'standard',
+						title : '取件标准',
+						width : 120,
+						align : 'center',
+						formatter : function(data,row ,index){
+							if(row.standard!=null){
+								return row.standard.name;
+							}
+							return "";
+						}
+					}, {
+						field : 'vehicleType',
+						title : '车型',
+						width : 120,
+						align : 'center'
+					}, {
+						field : 'vehicleNum',
+						title : '车牌号',
+						width : 120,
+						align : 'center'
+					}]]
+				});
 			}
 		</script>
 		
@@ -420,6 +495,9 @@
 		</div>
 		<div region="south" border="false" style="height:150px">
 			<div id="tabs" fit="true" class="easyui-tabs">
+			<div title="关联的快递员" id="courier" style="width:100%;height:100%;overflow:hidden">
+<table id="association_courier"></table>
+</div>
 				<div title="关联分区" id="subArea" style="width:100%;height:100%;overflow:hidden">
 					<table id="association_subarea"></table>
 				</div>

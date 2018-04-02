@@ -2,6 +2,7 @@ package com.robin.bos.service.base.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,5 +60,24 @@ public class CourierServiceImpl implements CourierService {
         return courierRepository.findAvalible();
     }
 
+	@Override
+	public List<Courier> findCourierByfixedArea(Long id) {
+		// TODO Auto-generated method stub
+		return courierRepository.findCourierByfixedArea(id);
+	}
+
+  //还原快递员
+  	@Override
+  	public void rest(String ids) {
+  		//为空判断
+  				if(StringUtils.isNotEmpty(ids)) {
+  					//切割数据
+  					String[] split = ids.split(",");
+  					for (String id : split) {
+  						courierRepository.updateDelTagByIds(Long.parseLong(id));
+  					}
+  				}
+  	}
+    
 }
   

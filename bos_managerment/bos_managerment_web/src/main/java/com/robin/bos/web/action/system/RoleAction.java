@@ -1,11 +1,16 @@
 package com.robin.bos.web.action.system;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -25,6 +30,7 @@ import com.robin.bos.service.system.PermissionService;
 import com.robin.bos.service.system.RoleService;
 import com.robin.bos.web.action.BaseAction;
 
+import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 /**  
@@ -127,7 +133,23 @@ public class RoleAction extends BaseAction<Role> {
         return NONE;
     }
     
-    
+    @Action("roleAction_edit")
+    public String edit() throws IOException{
+        
+        Map<String, Object> map = roleService.findPmsAndMenuById(getModel().getId());
+        
+        JsonConfig config = new JsonConfig();
+        config.setExcludes(new String[]{"roles","childrenMenus","parentMenu","children"});
+        String json = JSONObject.fromObject(map,config ).toString();
+        
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.write(json);
+        writer.close();
+        
+        return NONE;
+    }
     
     
     

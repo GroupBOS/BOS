@@ -160,7 +160,7 @@
 				拦截的规则执行的时候是从上往下执行的,一旦有一个规则匹配成功,后面的规则就不再执行了
 				拦截的规则不可以折行
 				/*:是/下面的所有文件(不包括文件夹里面)
-				/**:是/下面的所有文件(包括文件夹里面)
+				/**:是/下面 的所有文件(包括文件夹里面)
 			-->
 			<value>
 
@@ -170,14 +170,16 @@
 				/js/** = anon
 				/validatecode.jsp = anon
 				/userAction_login.action = anon
-				/courier_pageQuery.action = perms["courierAction_pageQuery"]
+				<!-- /courier_pageQuery.action = perms["courierAction_pageQuery"] -->
 				/hi.html = perms["courierAction_pageQuery"]
+				/webService/** = anon
+				/upload/* = anon
 				/** = authc
 			</value>
 		</property>
 	</bean>
 
-	<!-- 注册安全管理器 -->
+	<!-- 注册安全管理 器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<!-- 注入realm -->
 		<property name="realm" ref="userRealm"></property>
@@ -209,6 +211,7 @@
 			<!-- 指定具体的触发器,可以简单理解为具体的一个闹钟 -->
 			<list>
 				<ref bean="workBillEmailTrigger" />
+				<ref bean="promotionTrigger" />
 			</list>
 
 		</property>
@@ -222,7 +225,7 @@
 			<!-- 每隔五秒钟执行一次 
 			<value>0/5 * * * * ?</value> -->
 			<!-- 0s的时候启动 -->
-			<value>0 * * * * ? </value>
+			<value>0 * * * * ? 2099 </value>
 		</property>
 		<!-- 注入任务详情,闹钟响起的时候要做什么事情 -->
 		<property name="jobDetail" ref="workBillEmailJobDetail"></property>
@@ -236,9 +239,45 @@
 		<!-- 注入目标方法 -->
 		<property name="targetMethod" value="sendMail"></property>
 	</bean>
-
+	
 	<!-- 注册目标对象 -->
 	<bean id="workBillEmailJob" class="com.robin.bos.service.jobs.WorkbillJob"></bean>
-
+	
+	
+	
+	<!-- 定时检查宣传任务 -->
+	<!-- 注册任务详情,通过反射的方式调用目标类的目标方法 -->
+	<bean id="jobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 注入目标对象 -->
+		<property name="targetObject" ref="promotionJob"></property>
+		<!-- 注入目标方法 -->
+		<property name="targetMethod" value="checkPromotion"></property>
+	</bean>
+	<!-- 注册触发器,可以理解为这是一个闹钟 -->
+	<bean id="promotionTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<!-- 指定触发的规则.闹钟在什么时候响起 -->
+		<property name="cronExpression">
+			
+			<value>0/15/30/45 * 14 * * ?</value>
+		</property>
+		<!-- 注入任务详情,闹钟响起的时候要做什么事情 -->
+		<property name="jobDetail" ref="jobDetail"></property>
+	</bean>
+	
+	
+	<!--发布促销任务的WebService -->
+	<jaxrs:server address="/promotionService">
+		<jaxrs:serviceBeans>
+			<ref bean="promotionServiceImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+		</jaxrs:outInterceptors>
+	</jaxrs:server>
 
 </beans>

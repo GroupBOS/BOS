@@ -37,6 +37,7 @@ import com.robin.bos.domain.base.Standard;
 import com.robin.bos.service.base.CourierService;
 import com.robin.bos.web.action.BaseAction;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
@@ -200,7 +201,28 @@ public class CourierAction extends BaseAction<Courier>{
     }
     
     
-    
+  //还原快递员
+  	@Action(value="courierAction_rest" ,results = {
+  			@Result(name = "success", location = "/pages/base/courier.html", type = "redirect") })
+  	public String rest() {
+        courierSerivce.rest(ids);
+  		return SUCCESS;
+  	}
+    @Action("CourierAction_findCourierByfixedArea")
+    public String findCourierByfixedArea(){
+        List<Courier>list=courierSerivce.findCourierByfixedArea(getModel().getId());
+        
+        JsonConfig config= new JsonConfig();//排除列表
+        config.setExcludes(new String[]{"takeTime","fixedAreas"});
+        String string = JSONArray.fromObject(list,config).toString();//转json
+        ServletActionContext.getResponse().setContentType("application/json;charset=UTF-8");
+        try {
+            ServletActionContext.getResponse().getWriter().write(string);//写出到流
+        } catch (IOException e) {
+            e.printStackTrace();  
+        }
+        return null;
+    }
     
 
 }
