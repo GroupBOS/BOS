@@ -15,10 +15,11 @@
 		<script type="text/javascript" src="../../js/easyui/ext/jquery.cookie.js"></script>
 		<script src="../../js/easyui/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
 		<script type="text/javascript" src="../../js/ocupload/jquery.ocupload-1.1.2.js"></script>
+		<script type="text/javascript" src="../../js/jquery.ocupload-1.1.2.js"></script>
 		<script type="text/javascript">
 			$(function(){
 				$("#grid").datagrid({
-					url : '',
+					url : '../../waybillAction_pageQuery.action',
 					toolbar : [
 						{
 							id : 'btn-download',
@@ -102,7 +103,7 @@
 				});
 				
 				// 一键上传
-				$("#btn-upload").upload({
+			/* 	$("#btn-upload").upload({
 					 name: 'upload',  // <input name="file" />
 				     action: '../../waybill_batchImport.action',  // 提交请求action路径
 				     enctype: 'multipart/form-data', // 编码格式
@@ -115,7 +116,10 @@
 				        		$.messager.alert("错误提示",response,"error");
 				        	}
 				     }// 请求完成时 调用函数
-				});
+				}); */
+				$("#btn-upload").upload({					
+					action : "../../waybillAction_importXLS.action"
+				})
 			});
 		</script>
 	</head>

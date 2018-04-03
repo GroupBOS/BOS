@@ -34,6 +34,7 @@ public class SubAreaServiceImpl implements SubAreaService {
     @Override
     public SubArea save(SubArea model) {
         SubArea subArea=null;
+        
         if(model.getId()==null){//保存
             subArea =subAreaRepository.save(model);
         }else{//更新

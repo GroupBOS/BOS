@@ -31,13 +31,20 @@
 					
 					//test
 				$("#single").html("")
+		var sid	=rows[0].area.id
+		
+				
 			var po	=rows[0].area.province+rows[0].area.city+rows[0].area.district							
 				$("#keyWords").val(rows[0].keyWords)
 				$("#assistKeyWords").val(rows[0].assistKeyWords)
 				$("#startNum").val(rows[0].startNum)
 				$("#endNum").val(rows[0].endNum)
-				$("#position").val(rows[0].position)												
-				$("#area").combobox('setValue', po);						
+				$("#position").val(rows[0].position)
+				
+				$("#area").combobox('setText', po)
+				$("#area").combobox('setValue', sid)
+				
+					
 			$("#id").val(rows[0].id)
 			 var single =rows[0].single;
 			 if(single=="0"){
@@ -59,7 +66,7 @@
 					$.messager.alert("警告","警告警告,一次只能修改一行","warning")
 				}
 				
-				
+				//什么鬼
 			}
 			
 			function doDelete(){

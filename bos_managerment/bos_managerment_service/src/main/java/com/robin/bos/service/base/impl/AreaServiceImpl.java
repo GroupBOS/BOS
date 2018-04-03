@@ -40,9 +40,10 @@ public class AreaServiceImpl implements AreaService {
     public List<Area> findByQ(String q) {
         
         q = "%"+q.toUpperCase()+"%";
-          
+        List<Area> findByQ = areaRepository.findByQ(q);
+        
         // TODO Auto-generated method stub  
-        return areaRepository.findByQ(q);
+        return findByQ;
     }
 
     @Override
