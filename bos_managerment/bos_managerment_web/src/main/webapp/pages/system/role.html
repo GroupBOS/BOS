@@ -47,7 +47,7 @@ function edit(){
 		 			
 					
 					//动态获取可选择的权限  放在回显回调函数类 才能用到回调值backData
-					$.post("../../permission_findAll.action",function(date){
+					$.post("../../permissionAction_findAll.action",function(date){
 						console.log(backData);
 						var permissions = backData.permissions;
 						$(date).each(function(i,obj){
