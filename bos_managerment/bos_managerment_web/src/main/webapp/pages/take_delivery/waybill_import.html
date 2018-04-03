@@ -118,7 +118,11 @@
 				     }// 请求完成时 调用函数
 				}); */
 				$("#btn-upload").upload({					
-					action : "../../waybillAction_importXLS.action"
+					action : "../../waybillAction_importXLS.action",
+					onComplete: function (data, self, element){
+						$("#grid").datagrid('reload');
+					}
+					
 				})
 			});
 		</script>
