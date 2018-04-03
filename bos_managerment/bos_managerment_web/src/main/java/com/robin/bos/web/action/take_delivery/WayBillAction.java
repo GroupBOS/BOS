@@ -53,7 +53,7 @@ public class WayBillAction extends BaseAction<WayBill> {
         
         String msg = "0";
         try {
-            int i = 1/0;
+            //int i = 1/0;
             wayBillService.save(getModel());
             msg = "1";
             
