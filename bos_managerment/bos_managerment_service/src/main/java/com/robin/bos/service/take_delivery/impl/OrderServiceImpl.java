@@ -86,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
         
         //分单逻辑放到BOS后台里面做
         //1.尝试根据Customer表的address去找出fixedAreaId
-        String fixedAreaId = WebClient.create("http://localhost:8010/crm/crm/CustomerService/findFixedAreaIdByAddress").
+        String fixedAreaId = WebClient.create("http://localhost:8180/crm/crm/CustomerService/findFixedAreaIdByAddress").
         type(MediaType.APPLICATION_JSON).
         accept(MediaType.APPLICATION_JSON).
         query("address", order.getSendAddress()).

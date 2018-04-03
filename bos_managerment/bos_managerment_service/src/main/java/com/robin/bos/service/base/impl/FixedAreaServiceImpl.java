@@ -62,7 +62,7 @@ public class FixedAreaServiceImpl implements FixedAreaService {
     @Override
     public List<Customer> findUnAssociatedCustomers() {
         List<Customer> customers = (List<Customer>) WebClient.
-                create("http://localhost:8010/crm/crm/CustomerService/findUnAssociatedCustomers").
+                create("http://localhost:8180/crm/crm/CustomerService/findUnAssociatedCustomers").
                 type(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON).
                 getCollection(Customer.class);
@@ -73,7 +73,7 @@ public class FixedAreaServiceImpl implements FixedAreaService {
     @Override
     public List<Customer> findAssociatedCustomers(Long customerFixedAreaId) {
         List<Customer> customers = (List<Customer>) WebClient.
-                create("http://localhost:8010/crm/crm/CustomerService/findAssociatedCustomers").
+                create("http://localhost:8180/crm/crm/CustomerService/findAssociatedCustomers").
                 type(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON).
                 query("id", customerFixedAreaId).
@@ -85,14 +85,14 @@ public class FixedAreaServiceImpl implements FixedAreaService {
     public void assignCustomers2FixedArea(Long fixedAreaId, List<Long> customerIds) {
         if(customerIds != null)
         {
-            WebClient.create("http://localhost:8010/crm/crm/CustomerService/assignCustomers2FixedArea").
+            WebClient.create("http://localhost:8180/crm/crm/CustomerService/assignCustomers2FixedArea").
             type(MediaType.APPLICATION_JSON).
             accept(MediaType.APPLICATION_JSON).
             query("fixedAreaId", fixedAreaId).
             query("customerIds", customerIds).put(null);
         }else
         {
-            WebClient.create("http://localhost:8010/crm/crm/CustomerService/assignCustomers2FixedArea").
+            WebClient.create("http://localhost:8180/crm/crm/CustomerService/assignCustomers2FixedArea").
             type(MediaType.APPLICATION_JSON).
             accept(MediaType.APPLICATION_JSON).
             query("fixedAreaId", fixedAreaId).

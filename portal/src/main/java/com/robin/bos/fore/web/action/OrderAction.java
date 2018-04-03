@@ -94,7 +94,7 @@ public class OrderAction extends ActionSupport implements ModelDriven<Order>{
         }
         
         
-        WebClient.create("http://localhost:80/bos_managerment_web/webService/orderService/saveOrder").
+        WebClient.create("http://localhost:8080/bos_managerment_web/webService/orderService/saveOrder").
         type(MediaType.APPLICATION_JSON).
         accept(MediaType.APPLICATION_JSON).
         post(model);

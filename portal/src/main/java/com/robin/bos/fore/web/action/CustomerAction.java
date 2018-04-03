@@ -98,7 +98,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
         if(code.equals(checkcode))
         {
             //2.将该用户保存到数据库中
-            Response response = WebClient.create("http://localhost:8010/crm/crm/CustomerService/save").
+            Response response = WebClient.create("http://localhost:8180/crm/crm/CustomerService/save").
             type(MediaType.APPLICATION_JSON).
             accept(MediaType.APPLICATION_JSON).
             put(model);
@@ -115,7 +115,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
             
             //4.生成激活链接
             String activeURL = 
-                    "http://localhost:8020/portal/customerAction_active.action?activeCode="
+                    "http://localhost:8280/portal/customerAction_active.action?activeCode="
                     +activeCode
                     +"&telephone="+getModel().getTelephone();
             final String emailBody = "感谢您注册本网站的帐号，请在24小时之内点击<a href='"+activeURL+"'>激活链接</a>来激活账号";
@@ -195,7 +195,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
         if(StringUtils.isNotEmpty(serverActiveCode) && serverActiveCode.equals(activeCode))
         {
             //3.若一致,则将将Customer的type字段设为1,并跳转登录页面
-            WebClient.create("http://localhost:8010/crm/crm/CustomerService/active").
+            WebClient.create("http://localhost:8180/crm/crm/CustomerService/active").
             type(MediaType.APPLICATION_JSON).
             accept(MediaType.APPLICATION_JSON).
             query("telephone", getModel().getTelephone()).put(null);
@@ -228,7 +228,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
             //判断是否激活,如果已激活,将Customer保存在session中
             if(StringUtils.isNotEmpty(getModel().getTelephone()))
             {
-                Customer customer = WebClient.create("http://localhost:8010/crm/crm/CustomerService/findByTelephone"). 
+                Customer customer = WebClient.create("http://localhost:8180/crm/crm/CustomerService/findByTelephone"). 
                 type(MediaType.APPLICATION_JSON).
                 accept(MediaType.APPLICATION_JSON).
                 query("telephone", getModel().getTelephone()).
@@ -238,7 +238,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
                     if(customer.getType() == 1)
                     {
                         //如果已经激活,则向数据库查询
-                        Customer c = WebClient.create("http://localhost:8010/crm/crm/CustomerService/findByTelephoneAndPassword").
+                        Customer c = WebClient.create("http://localhost:8180/crm/crm/CustomerService/findByTelephoneAndPassword").
                         type(MediaType.APPLICATION_JSON).
                         accept(MediaType.APPLICATION_JSON).
                         query("telephone", getModel().getTelephone()).
